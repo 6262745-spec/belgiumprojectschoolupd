@@ -1,0 +1,217 @@
+/* @font-face {
+  font-family: "Pixelify Sans";
+  src: url("assets/fonts/PixelifySans[wght].ttf");
+  font-weight: 400 700;
+} 
+  
+Use if bad wifi, downloaded offline*/
+
+.presentation-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* mobile browsers: ignore the collapsing address bar */
+  overflow: hidden;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background-color: #222;
+  color: white;
+  font-family: "Pixelify Sans", sans-serif;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  overscroll-behavior: none;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.slide p, .slide h1 { padding: 0 1rem; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.7s ease;
+}
+
+.slide.prev {
+  transform: translateX(-100%);
+}
+
+.slide.active {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.quiz {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 20, 40, 0.55);
+  z-index: 2;
+  overflow-y: auto;
+}
+
+.quiz[hidden] { display: none; }
+
+.quiz-card {
+  width: min(640px, 90%);
+  padding: 1.75rem;
+  background: #fff6dd;
+  color: #1b1b2f;
+  border-radius: 0;
+  text-align: left;
+  /* a border made of shadows, which leaves the corners notched */
+  box-shadow:
+    0 -6px 0 0 #1b1b2f,
+    0 6px 0 0 #1b1b2f,
+    -6px 0 0 0 #1b1b2f,
+    6px 0 0 0 #1b1b2f,
+    0 16px 0 0 rgba(0, 0, 0, 0.3);
+}
+
+#quiz-timer {
+  margin: 0 0 0.6rem;
+  text-align: right;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.quiz-bar {
+  height: 18px;
+  background: #1b1b2f;
+}
+
+#quiz-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: repeating-linear-gradient(90deg, #88ce02 0 12px, #1b1b2f 12px 16px);
+}
+
+#quiz-bar-fill.low {
+  background: repeating-linear-gradient(90deg, #e63946 0 12px, #1b1b2f 12px 16px);
+}
+
+#quiz-question {
+  margin: 1.5rem 0;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1.25;
+}
+
+#quiz-choices { display: grid; gap: 1rem; }
+
+#quiz-choices button {
+  touch-action: manipulation;
+  padding: 0.8rem 1rem;
+  font-family: inherit;
+  font-size: 1.2rem;
+  text-align: left;
+  color: #1b1b2f;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow:
+    0 -4px 0 0 #1b1b2f,
+    0 4px 0 0 #1b1b2f,
+    -4px 0 0 0 #1b1b2f,
+    4px 0 0 0 #1b1b2f;
+}
+
+#quiz-choices button:hover,
+#quiz-choices button:focus-visible {
+  background: #88ce02;
+  outline: none;
+}
+
+#quiz-choices button:active { transform: translateY(4px); }
+
+/* ---
+   TOUCH CONTROLS (only shown on touch screens)
+   --- */
+.touch-controls,
+.back-btn { display: none; }
+
+.touch-btn {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #1b1b2f;
+  background: rgba(255, 246, 221, 0.85);
+  border: none;
+  touch-action: none;
+  box-shadow:
+    0 -4px 0 0 #1b1b2f,
+    0 4px 0 0 #1b1b2f,
+    -4px 0 0 0 #1b1b2f,
+    4px 0 0 0 #1b1b2f;
+}
+
+.touch-btn.pressed { background: #88ce02; transform: translateY(3px); }
+
+@media (pointer: coarse) {
+  .touch-controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    display: flex;
+    justify-content: space-between;
+    padding: 0 calc(16px + env(safe-area-inset-right)) 0 calc(16px + env(safe-area-inset-left));
+    pointer-events: none;
+  }
+
+  .touch-controls .touch-btn {
+    pointer-events: auto;
+    width: 96px;
+    height: 72px;
+  }
+
+  .back-btn {
+    display: block;
+    position: absolute;
+    top: calc(48px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+  }
+}
+
+/* ---
+   SMALL SCREENS
+   --- */
+@media (max-width: 600px) {
+  .quiz-card { padding: 1.25rem; }
+  #quiz-question { font-size: 1.3rem; margin: 1rem 0; }
+  #quiz-choices { gap: 0.8rem; }
+  #quiz-choices button { font-size: 1.05rem; padding: 0.75rem 0.9rem; }
+}
+
+/* Phones held sideways: little height, so put the choices side by side */
+@media (max-height: 500px) {
+  .quiz-card { padding: 1rem 1.25rem; }
+  #quiz-timer { font-size: 1rem; margin-bottom: 0.4rem; }
+  .quiz-bar { height: 12px; }
+  #quiz-question { font-size: 1.15rem; margin: 0.7rem 0; }
+  #quiz-choices { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+  #quiz-choices button { font-size: 1rem; padding: 0.55rem 0.8rem; }
+}

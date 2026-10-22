@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Belgium Project Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="presentation-container">
+    <div class="slide active">
+      <h1>Slide 1</h1>
+      <p>Slide 1, use right arrow (or swipe) to move</p>
+    </div>
+
+    <div class="slide">
+      <h1>Slide 2</h1>
+      <p>This is the second slide.</p>
+    </div>
+
+    <div class="slide">
+      <h1>Slide 3</h1>
+      <p>Slide 3</p>
+    </div>
+
+    <div class="slide">
+      <canvas id="game" height="400"></canvas>
+
+    <button id="btn-back" class="touch-btn back-btn" aria-label="Back">&larr;</button>
+    <div class="touch-controls">
+      <button id="btn-dive" class="touch-btn" aria-label="Dive">&#9660; DIVE</button>
+      <button id="btn-jump" class="touch-btn" aria-label="Jump">&#9650; JUMP</button>
+    </div>
+
+    <div id="quiz" class="quiz" hidden>
+      <div class="quiz-card">
+        <p id="quiz-timer"></p>
+        <div class="quiz-bar"><div id="quiz-bar-fill"></div></div>
+        <h2 id="quiz-question"></h2>
+        <div id="quiz-choices"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
