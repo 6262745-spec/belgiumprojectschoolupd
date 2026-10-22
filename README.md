@@ -1,3 +1,3 @@
 **FOR SCHOOL PROJECT**
 
-[Play](https://belgiumproject.netlify.app/)
+[Play](https://belgian.netlify.app/)
