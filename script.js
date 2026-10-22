@@ -6,10 +6,10 @@ function showSlide(index) {
   currentSlideIndex = index;
 
   // You could use .forEach() but i'll leave it non-idiomatic for readability
-for (let i = 0; i < slides.length; i++) {
-  slides[i].classList.toggle('active', i === index);
-  slides[i].classList.toggle('prev', i < index);
-}
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].classList.toggle('active', i === index);
+    slides[i].classList.toggle('prev', i < index);
+  }
 
   // Start the game when you arrive on its slide, stop it when you leave
   if (slides[index].querySelector('#game')) {
@@ -41,35 +41,24 @@ window.addEventListener('resize', () => {
   }
 });
 
-// Touch: swipe left/right to change slides, or tap the right/left side of the screen
-const SWIPE_MIN = 50;
+// Swipe left/right to change slides on touch screens (not on the game slide)
 let touchStartX = 0;
-let touchStartY = 0;
 
 window.addEventListener('touchstart', (e) => {
-  touchStartX = e.changedTouches[0].clientX;
-  touchStartY = e.changedTouches[0].clientY;
-}, { passive: true });
+  touchStartX = e.touches[0].clientX;
+});
 
 window.addEventListener('touchend', (e) => {
   if (slides[currentSlideIndex].querySelector('#game')) return;
 
   const dx = e.changedTouches[0].clientX - touchStartX;
-  const dy = e.changedTouches[0].clientY - touchStartY;
-  let direction = 0;
-
-  if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy)) {
-    direction = dx < 0 ? 1 : -1;   // swipe left goes forward
-  } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
-    direction = touchStartX > window.innerWidth / 3 ? 1 : -1;
-  }
-
-  const target = currentSlideIndex + direction;
-  if (direction !== 0 && target >= 0 && target < slides.length) {
-    showSlide(target);
+  if (dx < -50 && currentSlideIndex < slides.length - 1) {
+    showSlide(currentSlideIndex + 1);
+  } else if (dx > 50 && currentSlideIndex > 0) {
+    showSlide(currentSlideIndex - 1);
   }
 });
 
-document.getElementById('btn-back').addEventListener('click', () => {
+document.getElementById('btn-exit').addEventListener('click', () => {
   showSlide(currentSlideIndex - 1);
 });
