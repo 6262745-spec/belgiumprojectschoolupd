@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belgium Project Site</title>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,7 +11,10 @@
   <div class="presentation-container">
     <div class="slide active">
       <h1>Slide 1</h1>
-      <p>Slide 1, use right arrow (or swipe) to move</p>
+      <p>
+        <span class="hint-desktop">Use the right arrow to move</span>
+        <span class="hint-touch">Swipe to move</span>
+      </p>
     </div>
 
     <div class="slide">
@@ -28,22 +30,22 @@
     <div class="slide">
       <canvas id="game" height="400"></canvas>
 
-    <button id="btn-back" class="touch-btn back-btn" aria-label="Back">&larr;</button>
-    <div class="touch-controls">
-      <button id="btn-dive" class="touch-btn" aria-label="Dive">&#9660; DIVE</button>
-      <button id="btn-jump" class="touch-btn" aria-label="Jump">&#9650; JUMP</button>
-    </div>
+      <div id="touch-dive"></div>
+      <div id="touch-jump"></div>
 
-    <div id="quiz" class="quiz" hidden>
-      <div class="quiz-card">
-        <p id="quiz-timer"></p>
-        <div class="quiz-bar"><div id="quiz-bar-fill"></div></div>
-        <h2 id="quiz-question"></h2>
-        <div id="quiz-choices"></div>
+      <div id="quiz" class="quiz" hidden>
+        <div class="quiz-card">
+          <p id="quiz-timer"></p>
+          <div class="quiz-bar"><div id="quiz-bar-fill"></div></div>
+          <h2 id="quiz-question"></h2>
+          <div id="quiz-choices"></div>
+        </div>
       </div>
+
+      <button id="btn-exit">BACK</button>
+      <div id="rotate-hint"><p>Rotate your phone sideways to play</p></div>
     </div>
   </div>
-</div>
 
   <script src="questions.js"></script>
   <script src="script.js"></script>
