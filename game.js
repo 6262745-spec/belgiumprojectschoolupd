@@ -310,18 +310,23 @@ const PATTERNS = [
   { weight: 4, minSpeed: 0,  parts: [ { type: "high" } ] },
 
   // --- Uncommon ---
+  // double-ground hop
   { weight: 3, minSpeed: 8,  parts: [ { type: "ground" }, { type: "ground", gap: "close" } ] },
+  // mixed spacing
   { weight: 3, minSpeed: 9,  parts: [ { type: "ground" }, { type: "high", gap: "normal" } ] },
   { weight: 3, minSpeed: 9,  parts: [ { type: "high" },   { type: "ground", gap: "normal" } ] },
 
   // --- Rare ---
+  // Double Bee
   { weight: 2, minSpeed: 10, parts: [ { type: "high" },   { type: "high", gap: "bees" } ] },
+  // Triple ground hop
   { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "ground", gap: "close" }, { type: "ground", gap: "close" } ] },
-  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "close" } ] },
+  // Mixed sequence
+  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
 
   // --- Very Rare ---
-  { weight: 4, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
-  { weight: 4, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "normal" }, { type: "high",   gap: "normal" } ] },
+  { weight: 1, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
+  { weight: 1, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "normal" }, { type: "high",   gap: "normal" } ] },
 ];
 
 let patternBag = [];
