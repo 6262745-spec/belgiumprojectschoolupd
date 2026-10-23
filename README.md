@@ -12,9 +12,9 @@ School Project for country fair, with an powerpoint "slide" look and a quiz base
 A project for an upcoming country fair done in a time crunch. I probably should've used Powerpoint like everyone else but it's a great learning experience to push myself beyond my comfort zone. My 4th JS project. Not using a game framework (Phaser, PixiJS, Excalibur) for full control over my code, which proved to be a painful decision that caused desk slams and maybe psychological scar.
 
 ## Features
-- 
-- Feature 2
-- Feature 3
+- Touch screen sliding on mobile
+- Parallax BG
+- Cool sprite pixelated animations
 
 ## Built With
 - HTML / CSS / JavaScript
