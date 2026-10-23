@@ -1,8 +1,9 @@
 <p align="center">
   <a href="https://netlify.app">
-    <img src="./header.svg" width="800" alt="Belgium Geo Project Banner" />
+    <img src="https://githubusercontent.com" width="800" alt="Belgium Geo Project Banner" />
   </a>
 </p>
+
 
 
 <p align="center">
