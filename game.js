@@ -27,6 +27,7 @@ const portraitQuery = window.matchMedia("(pointer: coarse) and (orientation: por
 
 const DESIGN_H = 500;
 const WAFFLE_HEIGHT = 120;
+const DIVE_RATIO = 0.6;
 const MAX_STEP = 3;
 
 const MAX_HEALTH = 5;
@@ -37,20 +38,46 @@ const START_SPEED = 8;
 const MAX_SPEED = 15;
 const SPEED_UP = 0.002;
 
-const WAFFLE_CROP = { x: 125, y: 45, w: 265, h: 400 };
 const BEE_FRAMES = 6;
 const BEE_HITBOX = { side: 30, top: 15, bottom: 20 };
-const HOUSE_WALLS = ["#d8c7a8", "#c48a74", "#9fb0c2", "#e2d3b8"];
+
+const ART_SCALE = 3;
+const BODY_WIDTH = 25 * ART_SCALE;
+const SHEET_CELL = 48;
+const CROP = { x: 8, y: 2, w: 34, h: 42 };
+const CELL_FLOOR = 44;
+
+const RUN_FRAMES = 9;
+const RUN_FRAME_DISTANCE = 40;
+
+const JUMP_FEET = [44, 44, 44, 44, 38, 37, 39, 44, 44];
+
+const DIVE_FEET = [44, 42, 43, 44, 44, 44, 44, 44, 44];
+const DIVE_ART_H = 34;
+const DIVE_ENTRY = [2, 3];
+const DIVE_HOLD_FRAME = 4;
+const DIVE_FRAME_TICKS = 3;
+
+const FORK_CROP = { x: 18, y: 6, w: 8, h: 36 };
 
 
 // ---
 // ASSETS
 // ---
-const waffleImg = new Image();
-waffleImg.src = "assets/images/waffle.png";
+const runImg = new Image();
+runImg.src = "assets/images/waffle_run.png";
+
+const jumpImg = new Image();
+jumpImg.src = "assets/images/waffle_jump.png";
+
+const diveImg = new Image();
+diveImg.src = "assets/images/waffle_dive.png";
 
 const beeImg = new Image();
 beeImg.src = "assets/images/bee.png";
+
+const forkImg = new Image();
+forkImg.src = "assets/images/fork.png";
 
 const heartImg = new Image();
 heartImg.src = "assets/images/heart_spritesheet_32x32.png";
@@ -60,22 +87,28 @@ const HEART_DRAW = 30;
 const HEART_FULL = { col: 0, row: 0 };
 const HEART_EMPTY = { col: 4, row: 0 };
 
-const FORK = [
-  "X.X.X.X",
-  "X.X.X.X",
-  "X.X.X.X",
-  "XXXXXXX",
-  ".XXXXX.",
-  "..XXX..",
-  "..DXD..",
-  "..DXD..",
-  "..DXD..",
-  "..DXD..",
-  "..DXD..",
-  "..DXD..",
+const cloudLayers = [
+  new Image(),
+  new Image(),
+  new Image(),
+  new Image(),
+  new Image()
 ];
-const FORK_ROWS = FORK.length;
-const FORK_COLS = FORK[0].length;
+
+for (let i = 0; i < cloudLayers.length; i++) {
+  cloudLayers[i].src = `assets/bg/Clouds 5/${i + 1}.png`;
+}
+
+const bgLayers = [
+  new Image(),
+  new Image(),
+  new Image(),
+  new Image()
+];
+
+for (let i = 0; i < bgLayers.length; i++) {
+  bgLayers[i].src = `assets/bg/City/${i + 1}.png`;
+}
 
 
 // ---
@@ -84,7 +117,7 @@ const FORK_COLS = FORK[0].length;
 const player = {
   x: 0,
   y: 0,
-  width: 45,
+  width: BODY_WIDTH,
   height: 60,
   vy: 0,
 
@@ -96,23 +129,21 @@ const player = {
   standHeight: 60,
   diveHeight: 30,
   isDiving: false,
+  diveTime: 0,
 };
 
 const obstacles = [];
 const keys = {};
 
-// World size and scaling
 let floorY = 0;
 let gameW = 800;
 let scale = 1;
 
-// Loop control
 let running = false;
 let rafId = 0;
 let lastTime = 0;
 
-// Game progress
-let state = "start";   // "start" | "playing" | "question" | "gameover"
+let state = "start";
 let health = MAX_HEALTH;
 let speed = START_SPEED;
 let distance = 0;
@@ -120,14 +151,12 @@ let distanceSinceSpawn = 0;
 let nextGap = 600;
 let gameOverTime = 0;
 
-// Quiz
 let currentQ = null;
 let correctIndex = 0;
 let deadline = 0;
 let deck = [];
 
-// Debug
-let showHitboxes = false;   // press H
+let showHitboxes = false;
 
 
 // ---
@@ -176,7 +205,7 @@ window.addEventListener("keydown", e => {
   }
 
   if (state === "gameover") {
-    if (e.key === "Enter") pressStart();   // Enter button restarts, i swear i'll forget ts
+    if (e.key === "Enter") pressStart();
     return;
   }
 
@@ -193,7 +222,6 @@ window.addEventListener("keydown", e => {
 
 window.addEventListener("keyup", e => { keys[e.key] = false });
 
-// Touch: right half = jump, left half = hold to dive
 touchJump.addEventListener("pointerdown", function (e) {
   e.preventDefault();
   if (state === "playing") jump();
@@ -215,8 +243,6 @@ touchDive.addEventListener("pointerleave", releaseDive);
 // ---
 // HELPERS
 // ---
-
-// Basic fisher-yates implementation, great algorithm btw (Randomness)
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -260,12 +286,6 @@ function collides(a, b) {
 // ---
 // OBSTACLES
 // ---
-
-// gap = how far after the previous obstacle in the group (the first one ignores it)
-// minSpeed = the pattern only appears once the game is at least this fast
-// weight = how often it shows up (higher = more common)
-
-
 function jumpDistance() {
   return ((2 * -player.jumpPower) / player.gravity) * speed;
 }
@@ -279,6 +299,7 @@ function gapSize(kind) {
   if (kind === "bees") return 190;
   return minGap();
 }
+
 const PATTERNS = [
   { weight: 4, minSpeed: 0,  parts: [ { type: "ground" } ] },
   { weight: 3, minSpeed: 0,  parts: [ { type: "high" } ] },
@@ -305,7 +326,6 @@ function refillBag() {
 function pickPattern() {
   if (patternBag.length === 0) refillBag();
 
-  // avoid the same pattern twice in a row
   if (patternBag[patternBag.length - 1] === lastPattern) {
     for (let i = patternBag.length - 2; i >= 0; i--) {
       if (patternBag[i] !== lastPattern) {
@@ -328,8 +348,8 @@ function makeObstacle(type) {
     return { x: gameW, y: floorY - gap - size + BEE_HITBOX.bottom, width: size, height: size, type: "high", hit: false };
   }
 
-  const h = 40 + Math.random() * 30;
-  const w = h * FORK_COLS / FORK_ROWS;
+  const h = 45 + Math.random() * 27;
+  const w = h * FORK_CROP.w / FORK_CROP.h;
   return { x: gameW, y: floorY - h, width: w, height: h, type: "ground", hit: false };
 }
 
@@ -453,14 +473,18 @@ function updateTimer() {
 // UPDATE
 // ---
 function logic(step) {
-  // Speed ramp
   if (speed < MAX_SPEED) {
     speed += SPEED_UP * step;
     if (speed > MAX_SPEED) speed = MAX_SPEED;
   }
 
-  // Player: dive, gravity, landing
-  player.isDiving = keys["ArrowDown"] && !player.isJumping;
+  player.isDiving = !!keys["ArrowDown"] && !player.isJumping;
+  if (player.isDiving) {
+    player.diveTime += step;
+  } else {
+    player.diveTime = 0;
+  }
+
   player.height = player.isDiving ? player.diveHeight : player.standHeight;
   player.groundY = floorY - player.height;
 
@@ -478,17 +502,14 @@ function logic(step) {
     player.isJumping = false;
   }
 
-  // World movement and score
   const move = speed * step;
   distance += move;
 
-  // Spawning
   distanceSinceSpawn += move;
   if (distanceSinceSpawn >= nextGap) {
     spawnNext();
   }
 
-  // Move obstacles and check hits
   for (const o of obstacles) {
     o.x -= move;
 
@@ -500,7 +521,6 @@ function logic(step) {
     }
   }
 
-  // Remove obstacles that left the screen
   while (obstacles.length && obstacles[0].x + obstacles[0].width < 0) {
     obstacles.shift();
   }
@@ -512,173 +532,211 @@ function logic(step) {
 // ---
 function drawLayer(tileWidth, factor, drawTile) {
   const offset = (distance * factor) % tileWidth;
-  for (let x = -offset; x < gameW; x += tileWidth) {
+  for (let x = -offset; x < gameW + tileWidth; x += tileWidth) {
     drawTile(x);
   }
 }
 
-function drawCloud(x, y, size) {
-  ctx.beginPath();
-  ctx.ellipse(x, y, size, size * 0.45, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(x + size * 0.7, y + size * 0.1, size * 0.7, size * 0.35, 0, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(x - size * 0.7, y + size * 0.1, size * 0.6, size * 0.3, 0, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawHouse(x, w, h, wall) {
-  const top = floorY - h;
-
-  ctx.fillStyle = wall;
-  ctx.fillRect(x, top, w, h);
-
-  ctx.fillStyle = "#8a4b3d";
-  ctx.beginPath();
-  ctx.moveTo(x - 4, top);
-  ctx.lineTo(x + w / 2, top - w * 0.45);
-  ctx.lineTo(x + w + 4, top);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = "#6f8fb0";
-  for (let wy = top + 12; wy < floorY - 20; wy += 24) {
-    ctx.fillRect(x + w * 0.2, wy, 8, 12);
-    ctx.fillRect(x + w * 0.6, wy, 8, 12);
-  }
-}
-
-function drawTower(x) {
-  const w = 44;
-  const h = 170;
-  const top = floorY - h;
-
-  ctx.fillStyle = "#a79f93";
-  ctx.fillRect(x, top, w, h);
-
-  ctx.fillStyle = "#4f4f5c";
-  ctx.beginPath();
-  ctx.moveTo(x - 3, top);
-  ctx.lineTo(x + w / 2, top - 60);
-  ctx.lineTo(x + w + 3, top);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle = "#4f4f5c";
-  ctx.fillRect(x + w / 2 - 5, top + 20, 10, 24);
-
-  ctx.fillStyle = "#f4efe2";
-  ctx.beginPath();
-  ctx.arc(x + w / 2, top + 70, 9, 0, Math.PI * 2);
-  ctx.fill();
-}
-
 function drawBackground() {
-  // Sky
   const sky = ctx.createLinearGradient(0, 0, 0, floorY);
   sky.addColorStop(0, "#4aa8ee");
   sky.addColorStop(1, "#bfe6ff");
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, gameW + 2, floorY);
 
-  // Sun
-  ctx.fillStyle = "#fff3a0";
-  ctx.beginPath();
-  ctx.arc(gameW * 0.75, 80, 34, 0, Math.PI * 2);
-  ctx.fill();
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
 
-  // Clouds
-  ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-  drawLayer(700, 0.08, function (x) {
-    drawCloud(x + 100, 70, 35);
-    drawCloud(x + 380, 45, 28);
-    drawCloud(x + 560, 100, 32);
-  });
+  const cloudFactors = [0.02, 0.05, 0.08, 0.12];
+  for (let i = 0; i < cloudFactors.length; i++) {
+    const img = cloudLayers[i + 1];
+    if (!img || !img.complete || img.naturalWidth === 0) continue;
 
-  // Skyline
-  drawLayer(900, 0.25, function (x) {
-    drawHouse(x + 0, 60, 70, HOUSE_WALLS[0]);
-    drawHouse(x + 60, 50, 90, HOUSE_WALLS[1]);
-    drawHouse(x + 110, 70, 60, HOUSE_WALLS[2]);
-    drawTower(x + 220);
-    drawHouse(x + 264, 60, 80, HOUSE_WALLS[3]);
-    drawHouse(x + 324, 55, 65, HOUSE_WALLS[0]);
-    drawHouse(x + 520, 70, 85, HOUSE_WALLS[1]);
-    drawHouse(x + 590, 50, 70, HOUSE_WALLS[2]);
-    drawHouse(x + 640, 60, 100, HOUSE_WALLS[0]);
-    drawHouse(x + 700, 55, 75, HOUSE_WALLS[3]);
-  });
+    const tileW = img.naturalWidth;
+    drawLayer(tileW, cloudFactors[i], function (x) {
+      ctx.drawImage(img, snap(x), 0, snap(tileW), snap(DESIGN_H));
+    });
+  }
 
-  // Road
-  ctx.fillStyle = "#4b4f57";
+  const skylineLayers = [
+    { img: bgLayers[0], speed: 0.02, drawH: 220 },
+    { img: bgLayers[1], speed: 0.06, drawH: 240 }
+  ];
+
+  for (const layer of skylineLayers) {
+    if (!layer.img || !layer.img.complete || layer.img.naturalWidth === 0) continue;
+
+    const tileW = layer.img.naturalWidth;
+    const tileH = layer.img.naturalHeight;
+    const drawW = tileW * (layer.drawH / tileH);
+
+    drawLayer(drawW, layer.speed, function (x) {
+      ctx.drawImage(
+        layer.img,
+        snap(x),
+        snap(floorY - layer.drawH),
+        snap(drawW),
+        snap(layer.drawH)
+      );
+    });
+  }
+
+  // Railway Layer (3.png = bgLayers[2]) at original dimensions
+  if (bgLayers[2] && bgLayers[2].complete && bgLayers[2].naturalWidth > 0) {
+    const tileW = bgLayers[2].naturalWidth;
+    const tileH = bgLayers[2].naturalHeight;
+    const drawW = tileW;
+    const drawH = tileH;
+
+    drawLayer(drawW, 0.14, function (x) {
+      ctx.drawImage(
+        bgLayers[2],
+        snap(x),
+        snap(floorY - drawH),
+        snap(drawW),
+        snap(drawH)
+      );
+    });
+  }
+
+  ctx.restore();
+
+  ctx.fillStyle = "#2d3139";
   ctx.fillRect(0, floorY, gameW + 2, DESIGN_H - floorY);
-  ctx.fillStyle = "#d5d9df";
-  drawLayer(80, 1, function (x) {
-    ctx.fillRect(x, floorY + 14, 36, 3);
-    ctx.fillRect(x + 40, floorY + 28, 18, 3);
+
+  ctx.fillStyle = "#5c6370";
+  ctx.fillRect(0, floorY, gameW + 2, 6);
+
+  ctx.fillStyle = "#1e2126";
+  ctx.fillRect(0, floorY + 6, gameW + 2, 3);
+
+  ctx.fillStyle = "#8a93a2";
+  drawLayer(120, 1, function (x) {
+    ctx.fillRect(x, floorY + 22, 50, 4);
   });
 
-  // Floor line
-  ctx.strokeStyle = "#2b2f36";
+  ctx.strokeStyle = "#14161a";
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(0, floorY);
   ctx.lineTo(gameW, floorY);
   ctx.stroke();
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  if (bgLayers[3] && bgLayers[3].complete && bgLayers[3].naturalWidth > 0) {
+    const tileW = bgLayers[3].naturalWidth;
+    const tileH = bgLayers[3].naturalHeight;
+    const drawH = 260;
+    const drawW = tileW * (drawH / tileH);
+
+    drawLayer(drawW, 0.22, function (x) {
+      ctx.drawImage(
+        bgLayers[3],
+        snap(x),
+        snap(floorY - drawH),
+        snap(drawW),
+        snap(drawH)
+      );
+    });
+  }
+  ctx.restore();
 }
 
 
 // ---
 // DRAWING: SPRITES
 // ---
-function drawPlayer() {
-  if (!waffleImg.complete) return;
+function getRunFrame() {
+  return Math.floor(distance / RUN_FRAME_DISTANCE) % RUN_FRAMES;
+}
 
-  let drawWidth = player.width;
-  if (player.isDiving) drawWidth = player.width * 1.4;
-  const drawX = player.x - (drawWidth - player.width) / 2;
+function getJumpFrame() {
+  if (player.vy < -4) return 4;
+  if (player.vy < 4) return 5;
+  if (player.vy < 9) return 6;
+  return 7;
+}
 
+function getDiveFrame() {
+  const t = Math.floor(player.diveTime / DIVE_FRAME_TICKS);
+  if (t < DIVE_ENTRY.length) return DIVE_ENTRY[t];
+  return DIVE_HOLD_FRAME;
+}
+
+function snap(v) {
+  return Math.round(v * scale) / scale;
+}
+
+function drawFrame(img, frame, feetRow, sx = 1, sy = 1) {
+  if (!img.complete || img.naturalWidth === 0) return;
+
+  const col = frame % 3;
+  const row = Math.floor(frame / 3);
+  const w = CROP.w * ART_SCALE * sx;
+  const h = CROP.h * ART_SCALE * sy;
+  const drop = (CELL_FLOOR - feetRow) * ART_SCALE * sy;
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
   ctx.drawImage(
-    waffleImg,
-    WAFFLE_CROP.x, WAFFLE_CROP.y, WAFFLE_CROP.w, WAFFLE_CROP.h,
-    drawX, player.y, drawWidth, player.height
+    img,
+    col * SHEET_CELL + CROP.x, row * SHEET_CELL + CROP.y, CROP.w, CROP.h,
+    snap(player.x + (player.width - w) / 2),
+    snap(player.y + player.height - h + drop),
+    snap(w), snap(h)
   );
+  ctx.restore();
+}
+
+function drawPlayer() {
+  if (player.isDiving) {
+    const frame = getDiveFrame();
+    const squash = player.diveHeight / (DIVE_ART_H * ART_SCALE);
+    drawFrame(diveImg, frame, DIVE_FEET[frame], 1, squash);
+  } else if (player.isJumping) {
+    const frame = getJumpFrame();
+    drawFrame(jumpImg, frame, JUMP_FEET[frame]);
+  } else {
+    drawFrame(runImg, getRunFrame(), CELL_FLOOR);
+  }
+}
+
+function drawFork(o) {
+  if (!forkImg.complete || forkImg.naturalWidth === 0) return;
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  ctx.shadowColor = "rgba(20, 25, 45, 0.9)";
+  ctx.shadowBlur = 4 * scale;
+  ctx.drawImage(
+    forkImg,
+    FORK_CROP.x, FORK_CROP.y, FORK_CROP.w, FORK_CROP.h,
+    o.x, o.y, o.width, o.height
+  );
+  ctx.restore();
+}
+
+function drawBee(o) {
+  if (!beeImg.complete || beeImg.naturalWidth === 0) return;
+
+  const frameW = beeImg.naturalWidth / BEE_FRAMES;
+  const frameH = beeImg.naturalHeight;
+  const frame = Math.floor(Date.now() / 80) % BEE_FRAMES;
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(
+    beeImg,
+    frame * frameW, 0, frameW, frameH,
+    o.x, o.y, o.width, o.height
+  );
+  ctx.restore();
 }
 
 function drawObstacle(o) {
-  if (o.type === "ground") {
-    const cell = o.height / FORK_ROWS;
-
-    for (let r = 0; r < FORK_ROWS; r++) {
-      for (let c = 0; c < FORK_COLS; c++) {
-        const letter = FORK[r][c];
-        if (letter === ".") continue;
-
-        ctx.fillStyle = (letter === "D") ? "#2f353d" : "#5c6670";
-        ctx.fillRect(
-          Math.round(o.x + c * cell),
-          Math.round(o.y + r * cell),
-          Math.ceil(cell),
-          Math.ceil(cell)
-        );
-      }
-    }
-  } else if (beeImg.complete && beeImg.naturalWidth > 0) {
-    const frameW = beeImg.naturalWidth / BEE_FRAMES;
-    const frameH = beeImg.naturalHeight;
-    const frame = Math.floor(Date.now() / 80) % BEE_FRAMES;
-
-    ctx.save();
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(
-      beeImg,
-      frame * frameW, 0, frameW, frameH,
-      o.x, o.y, o.width, o.height
-    );
-    ctx.restore();
-  }
+  if (o.type === "ground") drawFork(o);
+  else drawBee(o);
 }
 
 function drawHitbox(box) {
@@ -796,9 +854,9 @@ function resizeCanvas() {
 
   floorY = DESIGN_H - 40;
   player.standHeight = WAFFLE_HEIGHT;
-  player.diveHeight = player.standHeight * 0.5;
+  player.diveHeight = player.standHeight * DIVE_RATIO;
   player.height = player.standHeight;
-  player.width = player.standHeight * (WAFFLE_CROP.w / WAFFLE_CROP.h);
+  player.width = BODY_WIDTH;
   player.x = 50;
   player.groundY = floorY - player.height;
   player.y = player.groundY;
@@ -853,6 +911,7 @@ function startGame() {
   player.vy = 0;
   player.isJumping = false;
   player.isDiving = false;
+  player.diveTime = 0;
   player.height = player.standHeight;
   player.groundY = floorY - player.height;
   player.y = player.groundY;
