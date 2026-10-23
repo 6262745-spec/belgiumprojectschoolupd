@@ -1,8 +1,9 @@
 <p align="center">
-  <a href="https://belgian.netlify.app/">
+  <a href="https://netlify.app">
     <img src="./header.svg" width="800" alt="Belgium Geo Project Banner" />
   </a>
 </p>
+
 
 <p align="center">
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
