@@ -55,7 +55,7 @@ Clone the project and open `index.html` in your browser:
 
 ```bash
 # Clone repository
-git clone [https://github.com/arch-devnix/belgiumproject](https://github.com/arch-devnix/belgiumproject)
+git clone https://github.com/arch-devnix/belgiumproject
 
 # Navigate to project directory
 cd belgiumproject
