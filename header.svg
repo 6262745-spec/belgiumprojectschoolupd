@@ -19,7 +19,6 @@
           overflow: hidden;
         }
 
-        /* Subtle animated background glow accent */
         .banner::before {
           content: '';
           position: absolute;
@@ -36,7 +35,6 @@
           font-weight: 900;
           letter-spacing: 2px;
           margin: 0 0 12px 0;
-          /* Belgium Theme Gradient: Black, Yellow, Red */
           background: linear-gradient(to right, #ffffff 20%, #eab308 50%, #ef4444 80%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -64,8 +62,6 @@
           border-radius: 8px;
           font-size: 13px;
           font-weight: 600;
-          text-decoration: none;
-          transition: transform 0.2s ease;
           border: 1px solid transparent;
         }
 
@@ -115,12 +111,12 @@
         </p>
         
         <div class="badge-container">
-          <a class="badge badge-live" href="https://belgian.netlify.app/" target="_blank">
+          <div class="badge badge-live">
             <span class="status-dot"></span>Live Demo
-          </a>
-          <a class="badge badge-github" href="https://arch-devnix.github.io/belgiumproject/" target="_blank">
+          </div>
+          <div class="badge badge-github">
             Play on GitHub
-          </a>
+          </div>
           <div class="badge badge-js">
             Vanilla JS Project
           </div>
