@@ -8,7 +8,7 @@
   <p>
       <a href="https://belgian.netlify.app/"><img src="https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" /></a> <a href="https://arch-devnix.github.io/belgiumproject/"><img src="https://img.shields.io/badge/Play_on-GitHub-black?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> <a href="https://github.com/arch-devnix/belgiumproject/"><img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" /></a>
     </p>
-    <p><em>💡<b>Hosting Note:</b> GitHub Pages is recommended for the most up-to-date live version[cite: 1].</em></p>
+    <p><em>💡<b>Hosting Note:</b> GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
