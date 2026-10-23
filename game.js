@@ -25,21 +25,25 @@ document.fonts.load('bold 20px "Pixelify Sans"');
 const touchQuery = window.matchMedia("(pointer: coarse)");
 const portraitQuery = window.matchMedia("(pointer: coarse) and (orientation: portrait)");
 
+// Constraints
 const DESIGN_H = 500;
 const WAFFLE_HEIGHT = 120;
 const DIVE_RATIO = 0.6;
 const MAX_STEP = 3;
 
+// Cool settings and health based stuff
 const MAX_HEALTH = 5;
 const QUESTION_TIME = 10;
 const WRONG_ANSWER_COSTS_HEALTH = true;
 
+// Speed stuff
 const START_SPEED = 8;
 const MAX_SPEED = 15;
 const SPEED_UP = 0.002;
 
+// Ehh dont touch anything below here...
 const BEE_FRAMES = 6;
-const BEE_HITBOX = { side: 30, top: 15, bottom: 20 };
+const BEE_HITBOX = { side: 30, top: 15, bottom: 20 }; // Hitbox, changing is okay ig
 
 const ART_SCALE = 3;
 const BODY_WIDTH = 25 * ART_SCALE;
@@ -58,7 +62,7 @@ const DIVE_ENTRY = [2, 3];
 const DIVE_HOLD_FRAME = 4;
 const DIVE_FRAME_TICKS = 3;
 
-const FORK_CROP = { x: 18, y: 6, w: 8, h: 36 };
+const FORK_CROP = { x: 18, y: 6, w: 8, h: 36 }; 
 
 
 // ---
