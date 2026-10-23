@@ -1,34 +1,67 @@
-# BELGIUM GEO PROJECT
+<div align="center">
 
-School Project for country fair, with an powerpoint "slide" look and a quiz based side scroller.
-<img width="2552" height="1434" alt="image" src="https://github.com/user-attachments/assets/b1972f15-ba4d-4f60-a5d5-7a680c90279b" />
+  <h1>BELGIUM GEO PROJECT</h1>
 
+  <p>
+    <b>An interactive country fair project featuring a PowerPoint-style showcase and a quiz-based side-scroller.</b>
+  </p>
 
+  <p>
+    <a href="https://belgian.netlify.app/">
+      <img src="https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" />
+    </a>
+    <a href="https://github.com/arch-devnix/belgiumproject">
+      <img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" />
+    </a>
+  </p>
 
-## Live Demo
-[Play here](https://belgian.netlify.app/)
+  <br />
 
-## About
-A project for an upcoming country fair done in a time crunch. I probably should've used Powerpoint like everyone else but it's a great learning experience to push myself beyond my comfort zone. My 4th JS project. Not using a game framework (Phaser, PixiJS, Excalibur) for full control over my code, which proved to be a painful decision that caused desk slams and maybe psychological scar.
+  <img src="https://github.com/user-attachments/assets/b1972f15-ba4d-4f60-a5d5-7a680c90279b" width="100%" alt="Belgium Geo Project Screenshot" />
 
-## Features
-- Touch screen sliding on mobile
-- Parallax BG
-- Cool sprite pixelated animations
+</div>
+
+<br />
+
+## About The Project
+
+A school project built for an upcoming country fair under a tight deadline. While PowerPoint was the standard choice for most, I decided to push myself out of my comfort zone and build an interactive web app from scratch.
+
+> **Developer Note:** This is my 4th JavaScript project. I chose not to use a game framework (like Phaser, PixiJS, or Excalibur) so I could maintain total control over the code—a challenging decision that was painful at times, but an incredible learning experience.
+
+<br />
+
+## Features & Highlights
+
+- **Mobile Friendly:** Full touch-screen swipe/slide support for mobile devices
+- **Parallax Effect:** Multi-layered background scrolling for depth
+- **Pixel Art:** Custom pixelated sprite animations built vanilla
+
+<br />
 
 ## Built With
-- HTML / CSS / JavaScript
-- [Netlify](https://netlify.com) for hosting
+
+<p>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify" />
+</p>
+
+<br />
 
 ## Run Locally
-git clone https://github.com/arch-devnix/belgiumproject
+
+Clone the project and open `index.html` in your browser:
+
+```bash
+# Clone repository
+git clone [https://github.com/arch-devnix/belgiumproject](https://github.com/arch-devnix/belgiumproject)
+
+# Navigate to project directory
 cd belgiumproject
-open index.html OR npx serve OR python3 -m http.server 8000
 
-## Context
-School project for GEO 203 ENR LIBER
-
-
-
-
-Devnix — [GitHub](https://github.com/arch-devnix)
+# Launch local server (Choose one)
+open index.html          # macOS default
+npx serve                # Node.js
+python3 -m http.server   # Python 3
