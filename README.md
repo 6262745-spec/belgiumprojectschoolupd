@@ -14,7 +14,7 @@
     <!-- Netlify Deploy Status Badge -->
     <a href="https://app.netlify.com/projects/belgian/deploys"><img src="https://api.netlify.com/api/v1/badges/2994bde2-9573-4afc-96f4-9fb4a2cd0e63/deploy-status" alt="Netlify Status" /></a>
   </p>
-  <p><em>💡<b>Hosting Note:</b> GitHub Pages is recommended for the most up-to-date live version.</em></p>
+  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit based system which means at one point my pushes will fail to deploy; therefore, GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
