@@ -27,15 +27,15 @@
 
 A school project built for an upcoming country fair under a tight deadline. While PowerPoint was the standard choice for most, I decided to push myself out of my comfort zone and build an interactive web app from scratch.
 
-> **Developer Note:** This is my 4th JavaScript project. I chose not to use a game framework (like Phaser, PixiJS, or Excalibur) so I could maintain total control over the code—a challenging decision that was painful at times, but an incredible learning experience.
+> **Developer Note:** This is my 4th JavaScript project. I chose not to use a game framework (like Phaser, PixiJS, or Excalibur) so I could maintain total control over the code, this proved rather painful; causing me potential lasting psychological scars and a broken keycap.
 
 <br />
 
 ## Features & Highlights
 
-- **Mobile Friendly:** Full touch-screen swipe/slide support for mobile devices
-- **Parallax Effect:** Multi-layered background scrolling for depth
-- **Pixel Art:** Custom pixelated sprite animations built vanilla
+- **Mobile Friendly:** touch-screen swipe support for mobile devices
+- **Parallax Effect:** layered background scrolling for "depth"
+- **Pixel Art:** Pixelated art animations generated from sprite sheets.
 
 <br />
 
