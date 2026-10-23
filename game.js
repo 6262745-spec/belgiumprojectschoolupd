@@ -299,19 +299,29 @@ function minGap() {
 }
 
 function gapSize(kind) {
-  if (kind === "close") return jumpDistance() * 0.2;
-  if (kind === "bees") return 190;
-  return minGap();
+  if (kind === "close") return jumpDistance() * 0.1;
+  if (kind === "bees") return 140;
+  return minGap() * 0.8;
 }
 
 const PATTERNS = [
-  { weight: 4, minSpeed: 0,  parts: [ { type: "ground" } ] },
-  { weight: 3, minSpeed: 0,  parts: [ { type: "high" } ] },
-  { weight: 2, minSpeed: 9,  parts: [ { type: "ground" }, { type: "ground", gap: "close" } ] },
-  { weight: 2, minSpeed: 9,  parts: [ { type: "ground" }, { type: "high", gap: "normal" } ] },
-  { weight: 2, minSpeed: 9,  parts: [ { type: "high" }, { type: "ground", gap: "normal" } ] },
-  { weight: 1, minSpeed: 11, parts: [ { type: "high" }, { type: "high", gap: "bees" } ] },
-  { weight: 1, minSpeed: 12, parts: [ { type: "ground" }, { type: "high", gap: "normal" }, { type: "ground", gap: "normal" } ] },
+  // --- Common ---
+  { weight: 5, minSpeed: 0,  parts: [ { type: "ground" } ] },
+  { weight: 4, minSpeed: 0,  parts: [ { type: "high" } ] },
+
+  // --- Uncommon  ---
+  { weight: 3, minSpeed: 8,  parts: [ { type: "ground" }, { type: "ground", gap: "close" } ] },
+  { weight: 3, minSpeed: 9,  parts: [ { type: "ground" }, { type: "high", gap: "normal" } ] },
+  { weight: 3, minSpeed: 9,  parts: [ { type: "high" },   { type: "ground", gap: "normal" } ] },
+
+  // --- Rare ---
+  { weight: 2, minSpeed: 10, parts: [ { type: "high" },   { type: "high", gap: "bees" } ] },
+  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "ground", gap: "close" }, { type: "ground", gap: "close" } ] },
+  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "close" }, { type: "ground", gap: "close" } ] },
+
+  // --- Very Rare ---
+  { weight: 1, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
+  { weight: 1, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "close" }, { type: "high",   gap: "normal" } ] },
 ];
 
 let patternBag = [];
@@ -358,7 +368,7 @@ function makeObstacle(type) {
 }
 
 function restGap() {
-  const extra = Math.max(150, 500 - (speed - START_SPEED) * 30);
+  const extra = Math.max(100, 300 - (speed - START_SPEED) * 20);
   return minGap() + Math.random() * extra;
 }
 
