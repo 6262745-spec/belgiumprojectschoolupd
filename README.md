@@ -6,9 +6,15 @@
     <b>An interactive country fair project featuring a PowerPoint-style showcase and a quiz-based side-scroller.</b>
   </p>
   <p>
-      <a href="https://belgian.netlify.app/"><img src="https://img.shields.io/badge/Live_Demo-Play_Now_(Outdated)-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" /></a> <a href="https://arch-devnix.github.io/belgiumproject/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"><img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" /></a>
-    </p>
-    <p><em>💡<b>Hosting Note:</b> GitHub Pages is recommended for the most up-to-date live version.</em></p>
+      <a href="https://belgian.netlify.app/"><img src="https://img.shields.io/badge/Live_Demo-Play_Now_(Outdated)-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" /></a> 
+      <a href="https://arch-devnix.github.io/belgiumproject/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> 
+      <a href="https://github.com/arch-devnix/belgiumproject/"><img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" /></a>
+  </p>
+  <p>
+    <!-- Netlify Deploy Status Badge -->
+    <a href="https://app.netlify.com/projects/belgian/deploys"><img src="https://api.netlify.com/api/v1/badges/2994bde2-9573-4afc-96f4-9fb4a2cd0e63/deploy-status" alt="Netlify Status" /></a>
+  </p>
+  <p><em>💡<b>Hosting Note:</b> GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
