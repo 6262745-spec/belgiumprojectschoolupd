@@ -309,7 +309,7 @@ const PATTERNS = [
   { weight: 5, minSpeed: 0,  parts: [ { type: "ground" } ] },
   { weight: 4, minSpeed: 0,  parts: [ { type: "high" } ] },
 
-  // --- Uncommon  ---
+  // --- Uncommon ---
   { weight: 3, minSpeed: 8,  parts: [ { type: "ground" }, { type: "ground", gap: "close" } ] },
   { weight: 3, minSpeed: 9,  parts: [ { type: "ground" }, { type: "high", gap: "normal" } ] },
   { weight: 3, minSpeed: 9,  parts: [ { type: "high" },   { type: "ground", gap: "normal" } ] },
@@ -317,11 +317,11 @@ const PATTERNS = [
   // --- Rare ---
   { weight: 2, minSpeed: 10, parts: [ { type: "high" },   { type: "high", gap: "bees" } ] },
   { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "ground", gap: "close" }, { type: "ground", gap: "close" } ] },
-  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "close" }, { type: "ground", gap: "close" } ] },
+  { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "close" } ] },
 
   // --- Very Rare ---
-  { weight: 1, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
-  { weight: 1, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "close" }, { type: "high",   gap: "normal" } ] },
+  { weight: 4, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
+  { weight: 4, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "normal" }, { type: "high",   gap: "normal" } ] },
 ];
 
 let patternBag = [];
