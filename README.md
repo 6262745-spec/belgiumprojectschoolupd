@@ -46,6 +46,7 @@ A school project built for an upcoming country fair under a tight deadline. Whil
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
   <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify" />
+    <img src="https://img.shields.io/badge/Github-black?style=flat-square&logo=Github&logoColor=white" alt="Github Pages" />
 </p>
 
 <br />
