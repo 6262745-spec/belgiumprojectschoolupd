@@ -10,7 +10,7 @@
         <img src="https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=netlify" alt="Play on Netlify" />
       </a>
       <a href="https://arch-devnix.github.io/belgiumproject/">
-        <img src="https://img.shields.io/badge/Play_on-GitHub-black?style=for-the-badge&logo=github" alt="Play on GitHub Pages" />
+        <img src="https://img.shields.io/badge/Live_Demo-Play_Now-black?style=for-the-badge&logo=github" alt="Play on GitHub Pages" />
       </a>
       <a href="https://github.com/arch-devnix/belgiumproject">
         <img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" />
