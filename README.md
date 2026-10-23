@@ -1,14 +1,26 @@
-<p align="center">
-  <a href="https://netlify.app">
-    <img src="https://githubusercontent.com" width="800" alt="Belgium Geo Project Banner" />
-  </a>
-</p>
+<div align="center">
 
+  <h1>BELGIUM GEO PROJECT</h1>
 
+  <p>
+    <b>An interactive country fair project featuring a PowerPoint-style showcase and a quiz-based side-scroller.</b>
+  </p>
+  <p>
+    <a href="https://belgian.netlify.app/" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" />
+    </a>
+    <a href="https://arch-devnix.github.io/belgiumproject/" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/Play_on-GitHub-black?style=for-the-badge&logo=github" alt="Play on GitHub" />
+    </a>
+    <a href="https://github.com/arch-devnix/belgiumproject" style="text-decoration: none;">
+      <img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" />
+    </a>
+  </p>
+  <br />
 
-<p align="center">
-  <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
-</p>
+  <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
+
+</div>
 
 <br />
 
@@ -23,18 +35,21 @@ A school project built for an upcoming country fair under a tight deadline. Whil
 ## Features & Highlights
 
 - **Mobile Friendly:** touch-screen swipe support for mobile devices
+
 - **Parallax Effect:** layered background scrolling for "depth"
+
 - **Pixel Art:** Pixelated art animations generated from sprite sheets.
+
 
 <br />
 
 ## Built With
 
 <p>
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify" />
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify" />
 </p>
 
 <br />
@@ -51,6 +66,6 @@ git clone https://github.com/arch-devnix/belgiumproject
 cd belgiumproject
 
 # Launch local server (Choose one)
-open index.html          # default
-npx serve                # Node.js
-python3 -m http.server   # Python 3
+open index.html          # default
+npx serve                # Node.js
+python3 -m http.server   # Python 3
