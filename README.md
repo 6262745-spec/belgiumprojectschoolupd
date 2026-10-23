@@ -1,7 +1,33 @@
-**FOR SCHOOL PROJECT**
+# Project Name
 
-[Play](https://belgian.netlify.app/)
+School Project for country fair, with an powerpoint "slide" look and a quiz based side scroller.
 
-**Preview**
+![Preview](screenshot.png)
 
-<img width="2552" height="1434" alt="image" src="https://github.com/user-attachments/assets/bee11517-214f-4ea5-97a2-97f55272ba70" />
+## Live Demo
+[Play here](https://belgian.netlify.app/)
+
+## About
+A project for an upcoming country fair done in a time crunch. I probably should've used Powerpoint like everyone else but it's a great learning experience to push myself beyond my comfort zone. My 4th JS project. Not using a game framework (Phaser, PixiJS, Excalibur) for full control over my code, which proved to be a painful decision that caused desk slams and maybe psychological scar.
+
+## Features
+- 
+- Feature 2
+- Feature 3
+
+## Built With
+- HTML / CSS / JavaScript
+- [Netlify](https://netlify.com) for hosting
+
+## Run Locally
+git clone https://github.com/arch-devnix/belgiumproject
+cd belgiumproject
+open index.html OR npx serve OR python3 -m http.server 8000
+
+## Context
+School project for GEO 203 ENR LIBER
+
+
+
+
+Devnix — [GitHub](https://github.com/arch-devnix)
