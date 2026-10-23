@@ -1,8 +1,9 @@
 # Project Name
 
 School Project for country fair, with an powerpoint "slide" look and a quiz based side scroller.
+<img width="2552" height="1434" alt="image" src="https://github.com/user-attachments/assets/b1972f15-ba4d-4f60-a5d5-7a680c90279b" />
 
-![Preview](screenshot.png)
+
 
 ## Live Demo
 [Play here](https://belgian.netlify.app/)
