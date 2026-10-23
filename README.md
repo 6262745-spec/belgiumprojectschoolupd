@@ -17,7 +17,7 @@
 
   <br />
 
-  <img src="https://github.com/user-attachments/assets/b1972f15-ba4d-4f60-a5d5-7a680c90279b" width="100%" alt="Belgium Geo Project Screenshot" />
+  <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
 
 </div>
 
