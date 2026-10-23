@@ -62,6 +62,6 @@ git clone [https://github.com/arch-devnix/belgiumproject](https://github.com/arc
 cd belgiumproject
 
 # Launch local server (Choose one)
-open index.html          # macOS default
+open index.html          # default
 npx serve                # Node.js
 python3 -m http.server   # Python 3
