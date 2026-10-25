@@ -2,6 +2,11 @@
 const slides = document.querySelectorAll('.slide');
 let currentSlideIndex = 0;
 
+document.getElementById('btn-insert-coin').addEventListener('click', () => {
+  document.getElementById('arcade-landing').style.display = 'none';
+  document.getElementById('presentation-wrapper').style.display = 'block';
+});
+
 function showSlide(index) {
   currentSlideIndex = index;
 
@@ -62,3 +67,57 @@ window.addEventListener('touchend', (e) => {
 document.getElementById('btn-exit').addEventListener('click', () => {
   showSlide(currentSlideIndex - 1);
 });
+
+// ---- Draggable Terminals Logic ----
+document.querySelectorAll('.terminal').forEach(windowEl => {
+  let isDragging = false;
+  let startX, startY;
+
+  const header = windowEl.querySelector('.map-screen-header');
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX - windowEl.offsetLeft;
+    startY = e.clientY - windowEl.offsetTop;
+    
+    windowEl.style.zIndex = 100; // Bring active window to front
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    windowEl.style.left = `${e.clientX - startX}px`;
+    windowEl.style.top = `${e.clientY - startY}px`;
+    windowEl.style.transform = 'none'; // Clear out CSS centering during drag
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+});
+
+const multilingualGreetings = [
+  "Hoe gaat het?",
+  "Comment ça va?",
+  "Wie geht's?",
+  "How are you?"
+];
+
+let greetingIndex = 0;
+const subtitleElement = document.getElementById("language-subtitle");
+
+if (subtitleElement) {
+  setInterval(() => {
+    // Fade out
+    subtitleElement.classList.add("fade-out");
+
+    setTimeout(() => {
+      // Switch text
+      greetingIndex = (greetingIndex + 1) % multilingualGreetings.length;
+      subtitleElement.textContent = multilingualGreetings[greetingIndex];
+      
+      // Fade back in
+      subtitleElement.classList.remove("fade-out");
+    }, 500); // This matches the 0.5s CSS transition time
+
+  }, 3500); // Changes text every 3.5 seconds
+}
