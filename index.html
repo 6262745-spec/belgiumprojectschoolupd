@@ -12,7 +12,6 @@
 
       <div class="scanlines"></div>
 
-      <!-- Landing Screen -->
       <div id="arcade-landing" class="arcade-landing">
 
       <div class="landing-header">
@@ -21,7 +20,6 @@
         <p class="subtitle" id="language-subtitle">Hoe gaat het?</p>
       </div>
 
-      <!-- Raw Screen Telemetry / Top-Left HUD -->
       <div class="screen-hud-topleft">
         <div class="hud-title">SYS_INDEX // DEBUG_LOG.DAT</div>
         <div class="hud-row"><span class="tag">[ACTIVE]</span> <a href="#" class="hud-link">01. ARCADE_SCREEN</a></div>
@@ -32,7 +30,6 @@
         <div class="hud-stats">SYS_LOAD: 14% | MEM: 640K</div>
       </div>
 
-      <!-- Center Stage: Globe Display Terminal -->
       <div class="terminal globe-display-container">
         <div class="map-screen-header">
           <span>BELGIUM.LOC // COUNTRY LOCATED</span>
@@ -46,8 +43,7 @@
           <img src="assets/slideImages/earthspin-sheetFront.gif" alt="Spinning Globe" class="pixel-globe-gif">
         </div>
       </div>
-
-      <!-- Side Preview HUD Terminal -->
+        
       <div class="terminal side-photo-card">
         <div class="map-screen-header">
           <span>LOC_PREVIEW: BRUGES</span>
@@ -70,7 +66,6 @@
           <span class="landing-footer">PRESS TO START</span>
         </div>
 
-      <!-- Credits Terminal Window -->
       <div class="terminal credits-terminal">
         <div class="map-screen-header">
           <span>SYS_CREDITS // TEAM_ROSTER</span>
@@ -89,7 +84,6 @@
         </div>
       </div>
 
-      <!-- Music & Volume Terminal Window -->
       <div class="terminal music-terminal">
         <div class="map-screen-header">
           <span>SYS_AUDIO // JUKER.DAT</span>
@@ -120,7 +114,6 @@
         </div>
       </div>
 
-      <!-- Background Music Player -->
       <audio id="bgm-player" loop>
         <source src="assets/audio/music/arcademusic.mp3" type="audio/mpeg">
         <source src="assets/audio/music/arcademusic2.mp3" type="audio/mpeg">
@@ -128,19 +121,16 @@
         <source src="assets/audio/music/vhs-noise.mp3" type="audio/mpeg">
       </audio>
 
-      <!-- Sound Effects & Quiz Audio -->
       <audio id="sfx-click" src="assets/audio/sfx/click.mp3" preload="auto"></audio>
       <audio id="sfx-jump" src="assets/audio/sfx/jump.mp3" preload="auto"></audio>
       <audio id="sfx-dive" src="assets/audio/sfx/dive.mp3" preload="auto"></audio>
       <audio id="sfx-hit" src="assets/audio/sfx/hit.mp3" preload="auto"></audio>
       <audio id="sfx-wrong" src="assets/audio/sfx/wronganswer.wav" preload="auto"></audio>
       <audio id="sfx-right" src="assets/audio/sfx/rightanswer.mp3" preload="auto"></audio>
-
-      <!-- Quiz Music (Looping) -->
       <audio id="sfx-quiz" src="assets/audio/sfx/quizmusic.mp3" loop preload="auto"></audio>
 
       </div>
-      <!-- Presentation Slides Container -->
+      
       <div class="presentation-container" id="presentation-wrapper" style="display: none;">
         <div class="slide active">
           <h1>Slide 1</h1>
@@ -180,8 +170,8 @@
         </div>
       </div>
 
-    </div> <!-- End crt-screen -->
-  </div> <!-- End arcade-casing -->
+    </div>
+  </div>
 
   <script src="questions.js"></script>
   <script src="script.js"></script>
