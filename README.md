@@ -79,7 +79,7 @@ Clone the project and open it via a local server (recommended for asset path res
 
 ```bash
 # Clone repository
-git clone [https://github.com/arch-devnix/belgiumproject.git](https://github.com/arch-devnix/belgiumproject.git)
+git clone 'https://github.com/arch-devnix/belgiumproject.git'
 
 # Navigate to project directory
 cd belgiumproject
