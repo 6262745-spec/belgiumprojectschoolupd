@@ -18,6 +18,7 @@
   <br />
 
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
+  <img src="previews/startmenu.png" width="100%" alt="Start menu, static" />
 
 </div>
 
