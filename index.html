@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Music Player Terminal Window -->
+      <!-- Music & Volume Terminal Window -->
       <div class="terminal music-terminal">
         <div class="map-screen-header">
           <span>SYS_AUDIO // JUKER.DAT</span>
@@ -106,13 +106,38 @@
             <button class="music-btn play-pause-btn" id="btn-track-toggle">PLAY</button>
             <button class="music-btn" id="btn-track-next">&gt;&gt;</button>
           </div>
+          
+          <div class="volume-controls-container">
+            <div class="volume-slider-row">
+              <label for="slider-bgm-volume">BGM VOL</label>
+              <input type="range" id="slider-bgm-volume" min="0" max="1" step="0.05" value="0.7">
+            </div>
+            <div class="volume-slider-row">
+              <label for="slider-sfx-volume">SFX VOL</label>
+              <input type="range" id="slider-sfx-volume" min="0" max="1" step="0.05" value="0.8">
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- Background Music Player -->
       <audio id="bgm-player" loop>
         <source src="assets/audio/music/arcademusic.mp3" type="audio/mpeg">
+        <source src="assets/audio/music/arcademusic2.mp3" type="audio/mpeg">
+        <source src="assets/audio/music/arcademusic3.mp3" type="audio/mpeg">
         <source src="assets/audio/music/vhs-noise.mp3" type="audio/mpeg">
       </audio>
+
+      <!-- Sound Effects & Quiz Audio -->
+      <audio id="sfx-click" src="assets/audio/sfx/click.mp3" preload="auto"></audio>
+      <audio id="sfx-jump" src="assets/audio/sfx/jump.mp3" preload="auto"></audio>
+      <audio id="sfx-dive" src="assets/audio/sfx/dive.mp3" preload="auto"></audio>
+      <audio id="sfx-hit" src="assets/audio/sfx/hit.mp3" preload="auto"></audio>
+      <audio id="sfx-wrong" src="assets/audio/sfx/wronganswer.wav" preload="auto"></audio>
+      <audio id="sfx-right" src="assets/audio/sfx/rightanswer.mp3" preload="auto"></audio>
+
+      <!-- Quiz Music (Looping) -->
+      <audio id="sfx-quiz" src="assets/audio/sfx/quizmusic.mp3" loop preload="auto"></audio>
 
       </div>
       <!-- Presentation Slides Container -->
