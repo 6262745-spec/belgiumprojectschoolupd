@@ -2,7 +2,89 @@
 const slides = document.querySelectorAll('.slide');
 let currentSlideIndex = 0;
 
+// Global Audio Volume Controls State
+let masterBgmVolume = 0.7;
+let masterSfxVolume = 0.8;
+
+// Fade Timers
+let bgmFadeTimer = null;
+let quizFadeTimer = null;
+
+// Universal SFX Player Helper with Volume Scaling
+function playSfx(id) {
+  const sound = document.getElementById(id);
+  if (sound) {
+    sound.volume = masterSfxVolume;
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+  }
+}
+
+// Fade Audio Helpers
+function fadeOutAudio(audioEl, duration = 600, callback) {
+  if (!audioEl) return;
+  clearInterval(bgmFadeTimer);
+  const startVolume = audioEl.volume;
+  const step = startVolume / (duration / 50);
+
+  bgmFadeTimer = setInterval(() => {
+    if (audioEl.volume > step) {
+      audioEl.volume -= step;
+    } else {
+      audioEl.volume = 0;
+      audioEl.pause();
+      clearInterval(bgmFadeTimer);
+      if (callback) callback();
+    }
+  }, 50);
+}
+
+function fadeInAudio(audioEl, targetVolume, duration = 600) {
+  if (!audioEl) return;
+  clearInterval(quizFadeTimer);
+  audioEl.volume = 0;
+  audioEl.play().catch(() => {});
+  const step = targetVolume / (duration / 50);
+
+  quizFadeTimer = setInterval(() => {
+    if (audioEl.volume + step < targetVolume) {
+      audioEl.volume += step;
+    } else {
+      audioEl.volume = targetVolume;
+      clearInterval(quizFadeTimer);
+    }
+  }, 50);
+}
+
+// Bind click SFX to buttons & links
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('button, .hud-link').forEach(btn => {
+    btn.addEventListener('click', () => playSfx('sfx-click'));
+  });
+
+  // Setup Volume Sliders
+  const bgmSlider = document.getElementById('slider-bgm-volume');
+  const sfxSlider = document.getElementById('slider-sfx-volume');
+
+  if (bgmSlider) {
+    bgmSlider.addEventListener('input', (e) => {
+      masterBgmVolume = parseFloat(e.target.value);
+      const bgmPlayer = document.getElementById('bgm-player');
+      if (bgmPlayer && !bgmPlayer.paused) {
+        bgmPlayer.volume = masterBgmVolume;
+      }
+    });
+  }
+
+  if (sfxSlider) {
+    sfxSlider.addEventListener('input', (e) => {
+      masterSfxVolume = parseFloat(e.target.value);
+    });
+  }
+});
+
 document.getElementById('btn-insert-coin').addEventListener('click', () => {
+  playSfx('sfx-click');
   document.getElementById('arcade-landing').style.display = 'none';
   document.getElementById('presentation-wrapper').style.display = 'block';
 });
@@ -10,7 +92,6 @@ document.getElementById('btn-insert-coin').addEventListener('click', () => {
 function showSlide(index) {
   currentSlideIndex = index;
 
-  // You could use .forEach() but i'll leave it non-idiomatic for readability
   for (let i = 0; i < slides.length; i++) {
     slides[i].classList.toggle('active', i === index);
     slides[i].classList.toggle('prev', i < index);
@@ -46,7 +127,7 @@ window.addEventListener('resize', () => {
   }
 });
 
-// Swipe left/right to change slides on touch screens (not on the game slide)
+// Swipe left/right to change slides on touch screens
 let touchStartX = 0;
 
 window.addEventListener('touchstart', (e) => {
@@ -107,23 +188,22 @@ const subtitleElement = document.getElementById("language-subtitle");
 
 if (subtitleElement) {
   setInterval(() => {
-    // Fade out
     subtitleElement.classList.add("fade-out");
 
     setTimeout(() => {
-      // Switch text
       greetingIndex = (greetingIndex + 1) % multilingualGreetings.length;
       subtitleElement.textContent = multilingualGreetings[greetingIndex];
-      
-      // Fade back in
       subtitleElement.classList.remove("fade-out");
-    }, 500); // This matches the 0.5s CSS transition time
+    }, 500);
 
-  }, 3500); // Changes text every 3.5 seconds
+  }, 3500);
 }
 
+// ---- Jukebox Terminal Audio Playlist ----
 const playlist = [
-  { name: "ARCADE_MUSIC.MP3", src: "assets/audio/music/arcademusic.mp3" },
+  { name: "ARCADE_MUSIC_1.MP3", src: "assets/audio/music/arcademusic.mp3" },
+  { name: "ARCADE_MUSIC_2.MP3", src: "assets/audio/music/arcademusic2.mp3" },
+  { name: "ARCADE_MUSIC_3.MP3", src: "assets/audio/music/arcademusic3.mp3" },
   { name: "VHS_NOISE.MP3", src: "assets/audio/music/vhs-noise.mp3" }
 ];
 
@@ -138,6 +218,7 @@ let isPlaying = false;
 function loadTrack(index) {
   bgmPlayer.src = playlist[index].src;
   if (isPlaying) {
+    bgmPlayer.volume = masterBgmVolume;
     bgmPlayer.play().catch(err => console.log("Playback error:", err));
   }
 }
@@ -145,16 +226,15 @@ function loadTrack(index) {
 if (trackToggleBtn && bgmPlayer) {
   trackToggleBtn.addEventListener('click', () => {
     if (isPlaying) {
-      bgmPlayer.pause();
+      fadeOutAudio(bgmPlayer, 400);
       trackToggleBtn.textContent = "PLAY";
       nowPlayingDisplay.textContent = "TRACK: [MUTED]";
       isPlaying = false;
     } else {
-      bgmPlayer.play().then(() => {
-        trackToggleBtn.textContent = "PAUSE";
-        nowPlayingDisplay.textContent = `PLAYING: ${playlist[currentTrackIndex].name}`;
-        isPlaying = true;
-      }).catch(err => console.log("Autoplay blocked:", err));
+      fadeInAudio(bgmPlayer, masterBgmVolume, 500);
+      trackToggleBtn.textContent = "PAUSE";
+      nowPlayingDisplay.textContent = `PLAYING: ${playlist[currentTrackIndex].name}`;
+      isPlaying = true;
     }
   });
 
