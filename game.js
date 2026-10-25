@@ -15,6 +15,7 @@ const quizBarFill = document.getElementById("quiz-bar-fill");
 const touchJump = document.getElementById("touch-jump");
 const touchDive = document.getElementById("touch-dive");
 
+const quizAudio = document.getElementById('sfx-quiz');
 
 // ---
 // CONFIG
@@ -25,25 +26,21 @@ document.fonts.load('bold 20px "Pixelify Sans"');
 const touchQuery = window.matchMedia("(pointer: coarse)");
 const portraitQuery = window.matchMedia("(pointer: coarse) and (orientation: portrait)");
 
-// Constraints
 const DESIGN_H = 500;
 const WAFFLE_HEIGHT = 120;
 const DIVE_RATIO = 0.6;
 const MAX_STEP = 3;
 
-// Cool settings and health based stuff
 const MAX_HEALTH = 5;
 const QUESTION_TIME = 10;
 const WRONG_ANSWER_COSTS_HEALTH = true;
 
-// Speed stuff
 const START_SPEED = 8;
 const MAX_SPEED = 15;
 const SPEED_UP = 0.002;
 
-// Ehh dont touch anything below here...
 const BEE_FRAMES = 6;
-const BEE_HITBOX = { side: 30, top: 15, bottom: 20 }; // Hitbox, changing is okay ig
+const BEE_HITBOX = { side: 30, top: 15, bottom: 20 };
 
 const ART_SCALE = 3;
 const BODY_WIDTH = 25 * ART_SCALE;
@@ -62,7 +59,7 @@ const DIVE_ENTRY = [2, 3];
 const DIVE_HOLD_FRAME = 4;
 const DIVE_FRAME_TICKS = 3;
 
-const FORK_CROP = { x: 18, y: 6, w: 8, h: 36 }; 
+const FORK_CROP = { x: 18, y: 6, w: 8, h: 36 };
 
 
 // ---
@@ -168,6 +165,7 @@ let showHitboxes = false;
 // ---
 function jump() {
   if (state !== "playing" || player.isJumping) return;
+  playSfx('sfx-jump');
   player.height = player.standHeight;
   player.y = floorY - player.standHeight;
   player.vy = player.jumpPower;
@@ -222,6 +220,10 @@ window.addEventListener("keydown", e => {
   if ((e.key === " " || e.key === "ArrowUp") && !e.repeat) {
     jump();
   }
+
+  if (e.key === "ArrowDown" && !e.repeat && state === "playing") {
+    playSfx('sfx-dive');
+  }
 });
 
 window.addEventListener("keyup", e => { keys[e.key] = false });
@@ -234,8 +236,10 @@ touchJump.addEventListener("pointerdown", function (e) {
 
 touchDive.addEventListener("pointerdown", function (e) {
   e.preventDefault();
-  if (state === "playing") keys["ArrowDown"] = true;
-  else pressStart();
+  if (state === "playing") {
+    playSfx('sfx-dive');
+    keys["ArrowDown"] = true;
+  } else pressStart();
 });
 
 function releaseDive() { keys["ArrowDown"] = false; }
@@ -299,32 +303,20 @@ function minGap() {
 }
 
 function gapSize(kind) {
-  if (kind === "close") return jumpDistance() * 0.1;
-  if (kind === "bees") return 140;
-  return minGap() * 0.8;
+  if (kind === "close") return jumpDistance() * 0.2;
+  if (kind === "bees") return 190;
+  return minGap();
 }
 
 const PATTERNS = [
-  // --- Common ---
   { weight: 5, minSpeed: 0,  parts: [ { type: "ground" } ] },
   { weight: 4, minSpeed: 0,  parts: [ { type: "high" } ] },
-
-  // --- Uncommon ---
-  // double-ground hop
   { weight: 3, minSpeed: 8,  parts: [ { type: "ground" }, { type: "ground", gap: "close" } ] },
-  // mixed spacing
   { weight: 3, minSpeed: 9,  parts: [ { type: "ground" }, { type: "high", gap: "normal" } ] },
   { weight: 3, minSpeed: 9,  parts: [ { type: "high" },   { type: "ground", gap: "normal" } ] },
-
-  // --- Rare ---
-  // Double Bee
   { weight: 2, minSpeed: 10, parts: [ { type: "high" },   { type: "high", gap: "bees" } ] },
-  // Triple ground hop
   { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "ground", gap: "close" }, { type: "ground", gap: "close" } ] },
-  // Mixed sequence
   { weight: 2, minSpeed: 11, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
-
-  // --- Very Rare ---
   { weight: 1, minSpeed: 12, parts: [ { type: "ground" }, { type: "high",   gap: "normal" }, { type: "ground", gap: "normal" } ] },
   { weight: 1, minSpeed: 13, parts: [ { type: "high" },   { type: "ground", gap: "normal" }, { type: "high",   gap: "normal" } ] },
 ];
@@ -373,7 +365,7 @@ function makeObstacle(type) {
 }
 
 function restGap() {
-  const extra = Math.max(100, 300 - (speed - START_SPEED) * 20);
+  const extra = Math.max(150, 500 - (speed - START_SPEED) * 30);
   return minGap() + Math.random() * extra;
 }
 
@@ -424,6 +416,15 @@ function askQuestion() {
   state = "question";
   currentQ = nextQuestion();
 
+  // Smoothly fade out BGM and fade in Trivia Quiz music
+  const bgm = document.getElementById('bgm-player');
+  if (bgm && isPlaying) {
+    fadeOutAudio(bgm, 500);
+  }
+  if (quizAudio) {
+    fadeInAudio(quizAudio, masterSfxVolume, 500);
+  }
+
   quizQuestion.textContent = currentQ.question;
 
   const options = [];
@@ -451,9 +452,16 @@ function askQuestion() {
 
 function answer(i) {
   if (state !== "question") return;
-  if (i !== correctIndex && WRONG_ANSWER_COSTS_HEALTH) {
-    loseHealth();
+
+  if (i === correctIndex) {
+    playSfx('sfx-right');
+  } else {
+    playSfx('sfx-wrong');
+    if (WRONG_ANSWER_COSTS_HEALTH) {
+      loseHealth();
+    }
   }
+
   closeQuestion();
 }
 
@@ -468,6 +476,16 @@ function loseHealth() {
 
 function closeQuestion() {
   quizBox.hidden = true;
+
+  // Smoothly fade out Quiz Audio and fade back in BGM
+  if (quizAudio) {
+    fadeOutAudio(quizAudio, 400);
+  }
+  const bgm = document.getElementById('bgm-player');
+  if (bgm && isPlaying) {
+    fadeInAudio(bgm, masterBgmVolume, 500);
+  }
+
   if (state !== "gameover") {
     state = "playing";
   }
@@ -476,6 +494,7 @@ function closeQuestion() {
 function updateTimer() {
   const msLeft = deadline - Date.now();
   if (msLeft <= 0) {
+    playSfx('sfx-wrong');
     loseHealth();
     closeQuestion();
     return;
@@ -534,6 +553,7 @@ function logic(step) {
 
     if (!o.hit && collides(getHitbox(player), getObstacleHitbox(o))) {
       o.hit = true;
+      playSfx('sfx-hit');
       forgiveNearby(o);
       askQuestion();
       break;
@@ -600,7 +620,6 @@ function drawBackground() {
     });
   }
 
-  // Railway Layer (3.png = bgLayers[2]) at original dimensions
   if (bgLayers[2] && bgLayers[2].complete && bgLayers[2].naturalWidth > 0) {
     const tileW = bgLayers[2].naturalWidth;
     const tileH = bgLayers[2].naturalHeight;
@@ -792,7 +811,7 @@ function drawHud(score) {
   ctx.fillStyle = "#0b2545";
   ctx.textAlign = "right";
   ctx.font = "24px " + UI_FONT;
-  ctx.fillText("Score: " + score, gameW - 10, 30);
+  ctx.fillText("Score: " + score, gameW - 28, 30);
 }
 
 function drawGameOver(score) {
