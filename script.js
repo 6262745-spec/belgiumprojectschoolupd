@@ -1,16 +1,12 @@
 // script.js
 const slides = document.querySelectorAll('.slide');
 let currentSlideIndex = 0;
-
-// Global Audio Volume Controls State
 let masterBgmVolume = 0.7;
 let masterSfxVolume = 0.8;
 
-// Fade Timers
 let bgmFadeTimer = null;
 let quizFadeTimer = null;
 
-// Universal SFX Player Helper with Volume Scaling
 function playSfx(id) {
   const sound = document.getElementById(id);
   if (sound) {
@@ -56,13 +52,11 @@ function fadeInAudio(audioEl, targetVolume, duration = 600) {
   }, 50);
 }
 
-// Bind click SFX to buttons & links
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('button, .hud-link').forEach(btn => {
     btn.addEventListener('click', () => playSfx('sfx-click'));
   });
-
-  // Setup Volume Sliders
+  
   const bgmSlider = document.getElementById('slider-bgm-volume');
   const sfxSlider = document.getElementById('slider-sfx-volume');
 
@@ -97,7 +91,6 @@ function showSlide(index) {
     slides[i].classList.toggle('prev', i < index);
   }
 
-  // Start the game when you arrive on its slide, stop it when you leave
   if (slides[index].querySelector('#game')) {
     window.resizeCanvas();
     window.startGame();
@@ -127,7 +120,6 @@ window.addEventListener('resize', () => {
   }
 });
 
-// Swipe left/right to change slides on touch screens
 let touchStartX = 0;
 
 window.addEventListener('touchstart', (e) => {
@@ -149,7 +141,7 @@ document.getElementById('btn-exit').addEventListener('click', () => {
   showSlide(currentSlideIndex - 1);
 });
 
-// ---- Draggable Terminals Logic ----
+
 document.querySelectorAll('.terminal').forEach(windowEl => {
   let isDragging = false;
   let startX, startY;
@@ -161,14 +153,14 @@ document.querySelectorAll('.terminal').forEach(windowEl => {
     startX = e.clientX - windowEl.offsetLeft;
     startY = e.clientY - windowEl.offsetTop;
     
-    windowEl.style.zIndex = 100; // Bring active window to front
+    windowEl.style.zIndex = 100;
   });
 
   window.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
     windowEl.style.left = `${e.clientX - startX}px`;
     windowEl.style.top = `${e.clientY - startY}px`;
-    windowEl.style.transform = 'none'; // Clear out CSS centering during drag
+    windowEl.style.transform = 'none';
   });
 
   window.addEventListener('mouseup', () => {
@@ -199,7 +191,6 @@ if (subtitleElement) {
   }, 3500);
 }
 
-// ---- Jukebox Terminal Audio Playlist ----
 const playlist = [
   { name: "ARCADE_MUSIC_1.MP3", src: "assets/audio/music/arcademusic.mp3" },
   { name: "ARCADE_MUSIC_2.MP3", src: "assets/audio/music/arcademusic2.mp3" },
