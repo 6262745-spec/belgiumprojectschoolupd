@@ -10,7 +10,7 @@ html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background-color: #222;
+  background-color: #111;
   color: white;
   font-family: "Pixelify Sans", sans-serif;
   text-align: center;
@@ -19,6 +19,446 @@ html, body {
   -webkit-user-select: none;
   user-select: none;
 }
+
+/* ---- 2.5D Arcade Cabinet (Enhanced Outer Casing Depth) ---- */
+.arcade-casing {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    #e2e2ec 0%,
+    #bcbcc6 48%,
+    #8f909c 100%
+  );
+  box-shadow:
+    inset 0 4px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -6px 0 #5e5f6a,
+    inset 6px 0 0 rgba(255, 255, 255, 0.6),
+    inset -6px 0 0 rgba(0, 0, 0, 0.25),
+    0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ---- Recessed CRT & Clean 3D Bevel Frame ---- */
+@keyframes crtAmbientJitter {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-0.3px, 0.3px); }
+  40% { transform: translate(0.3px, -0.3px); }
+  60% { transform: translate(-0.2px, -0.2px); }
+  80% { transform: translate(0.2px, 0.2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes vhsScanlineMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 8px; }
+}
+
+.crt-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 14px solid #14151a;
+  border-radius: 40px / 25px;
+  background: #111a2e;
+  animation: crtAmbientJitter 4s ease-in-out infinite;
+  
+  /* Clean, uniform 3D depth shadow without stacked stripes at the bottom */
+  box-shadow:
+    inset 0 0 0 4px #2b2c35,
+    inset 0 0 0 9px #050608,
+    inset 0 0 60px 18px rgba(0, 0, 0, 0.9),
+    0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+/* ---- Subtle Glass Sheen Overlay ---- */
+.crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+  border-radius: 26px / 16px;
+}
+
+/* ---- CRT Scanlines ---- */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.28) 50%
+  );
+  background-size: 100% 4px;
+  animation: vhsScanlineMove 1.2s linear infinite;
+}
+
+/* ==========================================
+   LANDING PAGE (FULL HEIGHT DISTRIBUTION)
+   ========================================== */
+
+.arcade-landing {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem 2rem 2rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      #1c2b49 0%,
+      #111a2e 58%,
+      #090e19 100%
+    );
+}
+
+/* ---- Credits Terminal Window ---- */
+.credits-terminal {
+  width: 240px;
+  left: 2rem;
+  bottom: 5.5rem;
+  height: fit-content !important;
+  flex: none !important;
+}
+
+.credits-body {
+  padding: 0.6rem;
+  background: #0b1326;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  text-align: left;
+  height: auto;
+}
+
+.subtitle {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.subtitle.fade-out {
+  opacity: 0;
+}
+
+/* ---- Landing Header ---- */
+.landing-header {
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.landing-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #6a7f9e;
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+}
+
+.arcade-landing .game-title {
+  margin: 0;
+  color: #f7df1e;
+  font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+  line-height: 1.15;
+  letter-spacing: 1px;
+  text-shadow:
+    3px 3px 0 #a88d00,
+    6px 6px 0 #080b14;
+  margin-bottom: 0.2rem;
+}
+
+.arcade-landing .subtitle {
+  margin: 0;
+  color: #7285a8;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+}
+
+/* ---- Raw Screen Telemetry HUD (Top-Left Green Text) ---- */
+.screen-hud-topleft {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  font-family: "Pixelify Sans", monospace;
+  text-align: left;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  pointer-events: auto;
+}
+
+.hud-title {
+  color: #33ff33;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.2rem;
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.4);
+}
+
+.hud-row {
+  font-size: 0.75rem;
+  color: #2eb82e;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.hud-row .tag {
+  color: #a3ff47;
+  font-size: 0.65rem;
+}
+
+.hud-link {
+  color: #33ff33;
+  text-decoration: none;
+  transition: color 0.1s ease;
+}
+
+.hud-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
+}
+
+.hud-stats {
+  margin-top: 0.2rem;
+  font-size: 0.65rem;
+  color: #248f24;
+  letter-spacing: 1px;
+}
+
+/* ---- Unified Terminal Windows (Draggable) ---- */
+.terminal {
+  position: absolute;
+  background: #090e19;
+  border: 2px solid #293752;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Globe Terminal Starting Position */
+.globe-display-container {
+  width: min(100%, 420px);
+  aspect-ratio: 16 / 9;
+  top: 28%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ---- Bruges Preview Terminal Starting Position ---- */
+.side-photo-card {
+  width: 260px;
+  aspect-ratio: 16 / 11;
+  right: 2rem;
+  bottom: 5.5rem;
+}
+
+.side-image-wrapper {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05) brightness(0.95);
+}
+
+.map-screen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #152238;
+  color: #6a7f9e;
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  padding: 0.3rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #293752;
+  cursor: grab;
+  user-select: none;
+}
+
+.map-screen-header:active {
+  cursor: grabbing;
+}
+
+.terminal-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.control-btn {
+  width: 8px;
+  height: 8px;
+  background: #293752;
+  border: 1px solid #4a5c78;
+  display: inline-block;
+}
+
+.globe-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: 
+    linear-gradient(rgba(41, 55, 82, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 55, 82, 0.15) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-color: #0b1326;
+}
+
+.pixel-globe-gif {
+  width: 148px;
+  height: 148px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+/* ---- Insert Coin Container ---- */
+.insert-coin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.insert-coin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 0.85rem 2.2rem;
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #171a27;
+  background: #f7df1e;
+  border: 2px solid #fff08a;
+  cursor: pointer;
+  box-shadow:
+    0 4px 0 #a88d00,
+    0 7px 0 #080b14;
+  animation: pulseBlink 1.5s infinite steps(1);
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.coin-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #171a27;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.insert-coin-btn:hover {
+  animation: none;
+  background: #fff078;
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 #a88d00,
+    0 9px 0 #080b14;
+}
+
+.insert-coin-btn:active {
+  animation: none;
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 #a88d00,
+    0 2px 0 #080b14;
+}
+
+.insert-coin-btn:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 5px;
+}
+
+@keyframes pulseBlink {
+  50% {
+    opacity: 0.65;
+  }
+}
+
+/* ---- Landing Footer ---- */
+.landing-footer {
+  color: #4f6180;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+}
+
+/* ---- Minimal Corner Credits ---- */
+.credits-panel {
+  position: absolute;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+  color: #4a5c78;
+  text-align: left;
+  pointer-events: none;
+}
+
+.credit-row {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.1rem 0;
+  border: none;
+}
+
+.credit-name {
+  color: #6c7e9c;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.credit-role {
+  color: #3b495e;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+/* ==========================================
+   PRESENTATION AND SLIDES
+   ========================================== */
 
 .presentation-container {
   position: relative;
@@ -46,7 +486,9 @@ canvas {
   transform: translateX(100%);
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.7s ease;
+  transition:
+    transform 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 0.7s ease;
 }
 
 .slide.prev {
@@ -59,7 +501,10 @@ canvas {
   pointer-events: auto;
 }
 
-/* ---- Quiz ---- */
+/* ==========================================
+   QUIZ
+   ========================================== */
+
 .quiz {
   position: absolute;
   inset: 0;
@@ -70,7 +515,9 @@ canvas {
   background: rgba(10, 20, 40, 0.55);
 }
 
-.quiz[hidden] { display: none; }
+.quiz[hidden] {
+  display: none;
+}
 
 .quiz-card {
   width: min(640px, 90%);
@@ -105,11 +552,19 @@ canvas {
 #quiz-bar-fill {
   height: 100%;
   width: 100%;
-  background: repeating-linear-gradient(90deg, #88ce02 0 12px, #1b1b2f 12px 16px);
+  background: repeating-linear-gradient(
+    90deg,
+    #88ce02 0 12px,
+    #1b1b2f 12px 16px
+  );
 }
 
 #quiz-bar-fill.low {
-  background: repeating-linear-gradient(90deg, #e63946 0 12px, #1b1b2f 12px 16px);
+  background: repeating-linear-gradient(
+    90deg,
+    #e63946 0 12px,
+    #1b1b2f 12px 16px
+  );
 }
 
 #quiz-question {
@@ -118,7 +573,10 @@ canvas {
   line-height: 1.25;
 }
 
-#quiz-choices { display: grid; gap: 1rem; }
+#quiz-choices {
+  display: grid;
+  gap: 1rem;
+}
 
 #quiz-choices button {
   padding: 0.8rem 1rem;
@@ -142,13 +600,24 @@ canvas {
   outline: none;
 }
 
-#quiz-choices button:active { transform: translateY(4px); }
+#quiz-choices button:active {
+  transform: translateY(4px);
+}
 
-/* ---- Mobile ---- */
-#touch-dive, #touch-jump, #btn-exit, #rotate-hint { display: none; }
+/* ==========================================
+   MOBILE GAME CONTROLS & RESPONSIVENESS
+   ========================================== */
+
+#touch-dive,
+#touch-jump,
+#btn-exit,
+#rotate-hint {
+  display: none;
+}
 
 @media (pointer: coarse) {
-  #touch-dive, #touch-jump {
+  #touch-dive,
+  #touch-jump {
     display: block;
     position: absolute;
     top: 0;
@@ -193,7 +662,9 @@ canvas {
 }
 
 @media (pointer: coarse) and (orientation: portrait) {
-  #rotate-hint { display: flex; }
+  #rotate-hint {
+    display: flex;
+  }
 }
 
 @media (max-height: 520px) {
@@ -203,6 +674,16 @@ canvas {
   #quiz-choices button { padding: 0.6rem 0.8rem; font-size: 1rem; }
 }
 
+@media (max-width: 700px) {
+  .arcade-landing { padding: 1.5rem 1rem; gap: 0.8rem; }
+  .landing-label { font-size: 0.7rem; letter-spacing: 2px; }
+  .arcade-landing .subtitle { font-size: 0.95rem; }
+  .insert-coin-btn { padding: 0.7rem 1.5rem; font-size: 1.1rem; }
+  .credits-panel { left: 1rem; bottom: 1rem; }
+  .side-photo-card { display: none; }
+}
+
+/* ---- Input Hints ---- */
 .hint-touch { display: none; }
 
 @media (pointer: coarse) {
