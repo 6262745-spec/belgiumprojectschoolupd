@@ -17,8 +17,8 @@
   <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit-based system which means at one point my pushes will fail to deploy for the current cycle... Refer to the status badge on top to see if it's up to date (failed means it's using the latest outdated files); therefore, GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
-  <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
-  <img src="previews/startmenu.png" width="100%" alt="Start menu, static" />
+  <img src="previews/gamepre.png" width="50%" alt="Game in action, static" />
+  <img src="previews/startmenu.png" width="50%" alt="Start menu, static" />
 
 </div>
 
