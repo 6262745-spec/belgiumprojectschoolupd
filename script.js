@@ -121,3 +121,56 @@ if (subtitleElement) {
 
   }, 3500); // Changes text every 3.5 seconds
 }
+
+const playlist = [
+  { name: "ARCADE_MUSIC.MP3", src: "assets/audio/music/arcademusic.mp3" },
+  { name: "VHS_NOISE.MP3", src: "assets/audio/music/vhs-noise.mp3" }
+];
+
+let currentTrackIndex = 0;
+const bgmPlayer = document.getElementById('bgm-player');
+const trackToggleBtn = document.getElementById('btn-track-toggle');
+const nowPlayingDisplay = document.getElementById('now-playing');
+const nextTrackBtn = document.getElementById('btn-track-next');
+const prevTrackBtn = document.getElementById('btn-track-prev');
+let isPlaying = false;
+
+function loadTrack(index) {
+  bgmPlayer.src = playlist[index].src;
+  if (isPlaying) {
+    bgmPlayer.play().catch(err => console.log("Playback error:", err));
+  }
+}
+
+if (trackToggleBtn && bgmPlayer) {
+  trackToggleBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      bgmPlayer.pause();
+      trackToggleBtn.textContent = "PLAY";
+      nowPlayingDisplay.textContent = "TRACK: [MUTED]";
+      isPlaying = false;
+    } else {
+      bgmPlayer.play().then(() => {
+        trackToggleBtn.textContent = "PAUSE";
+        nowPlayingDisplay.textContent = `PLAYING: ${playlist[currentTrackIndex].name}`;
+        isPlaying = true;
+      }).catch(err => console.log("Autoplay blocked:", err));
+    }
+  });
+
+  nextTrackBtn.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    loadTrack(currentTrackIndex);
+    if (isPlaying) {
+      nowPlayingDisplay.textContent = `PLAYING: ${playlist[currentTrackIndex].name}`;
+    }
+  });
+
+  prevTrackBtn.addEventListener('click', () => {
+    currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrackIndex);
+    if (isPlaying) {
+      nowPlayingDisplay.textContent = `PLAYING: ${playlist[currentTrackIndex].name}`;
+    }
+  });
+}
