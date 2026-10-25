@@ -7,45 +7,131 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div class="arcade-casing">
+    <div class="crt-screen">
 
-  <div class="presentation-container">
-    <div class="slide active">
-      <h1>Slide 1</h1>
-      <p>
-        <span class="hint-desktop">Use the right arrow to move</span>
-        <span class="hint-touch">Swipe to move</span>
-      </p>
-    </div>
+      <div class="scanlines"></div>
 
-    <div class="slide">
-      <h1>Slide 2</h1>
-      <p>This is the second slide.</p>
-    </div>
+      <!-- Landing Screen -->
+      <div id="arcade-landing" class="arcade-landing">
 
-    <div class="slide">
-      <h1>Slide 3</h1>
-      <p>Slide 3</p>
-    </div>
+      <div class="landing-header">
+        <span class="landing-label">BELGIUM • CLASS PROJECT</span>
+        <h1 class="game-title">Belgium Project</h1>
+        <p class="subtitle" id="language-subtitle">Hoe gaat het?</p>
+      </div>
 
-    <div class="slide">
-      <canvas id="game" height="400"></canvas>
+      <!-- Raw Screen Telemetry / Top-Left HUD -->
+      <div class="screen-hud-topleft">
+        <div class="hud-title">SYS_INDEX // DEBUG_LOG.DAT</div>
+        <div class="hud-row"><span class="tag">[ACTIVE]</span> <a href="#" class="hud-link">01. ARCADE_SCREEN</a></div>
+        <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">02. PROJECT_OVERVIEW</a></div>
+        <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">03. BELGIUM_HISTORY</a></div>
+        <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">04. BRUGES_DATA</a></div>
+        <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">05. ARCADE_GAME</a></div>
+        <div class="hud-stats">SYS_LOAD: 14% | MEM: 640K</div>
+      </div>
 
-      <div id="touch-dive"></div>
-      <div id="touch-jump"></div>
-
-      <div id="quiz" class="quiz" hidden>
-        <div class="quiz-card">
-          <p id="quiz-timer"></p>
-          <div class="quiz-bar"><div id="quiz-bar-fill"></div></div>
-          <h2 id="quiz-question"></h2>
-          <div id="quiz-choices"></div>
+      <!-- Center Stage: Globe Display Terminal -->
+      <div class="terminal globe-display-container">
+        <div class="map-screen-header">
+          <span>BELGIUM.LOC // COUNTRY LOCATED</span>
+          <span class="terminal-controls">
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+          </span>
+        </div>
+        <div class="globe-wrapper">
+          <img src="assets/slideImages/earthspin-sheetFront.gif" alt="Spinning Globe" class="pixel-globe-gif">
         </div>
       </div>
 
-      <button id="btn-exit">BACK</button>
-      <div id="rotate-hint"><p>Rotate your phone sideways to play</p></div>
-    </div>
-  </div>
+      <!-- Side Preview HUD Terminal -->
+      <div class="terminal side-photo-card">
+        <div class="map-screen-header">
+          <span>LOC_PREVIEW: BRUGES</span>
+          <span class="terminal-controls">
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+          </span>
+        </div>
+        <div class="side-image-wrapper">
+          <img src="assets/slideImages/burgesFront.avif" alt="Bruges, Belgium" class="hero-image">
+        </div>
+      </div>
+
+        <div class="insert-coin-container">
+          <button id="btn-insert-coin" class="insert-coin-btn">
+            <span class="coin-symbol">+</span>
+            INSERT COIN
+          </button>
+          <span class="landing-footer">PRESS TO START</span>
+        </div>
+
+      <!-- Credits Terminal Window -->
+      <div class="terminal credits-terminal">
+        <div class="map-screen-header">
+          <span>SYS_CREDITS // TEAM_ROSTER</span>
+          <span class="terminal-controls">
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+          </span>
+        </div>
+        <div class="credits-body">
+          <div class="credit-row"><span class="credit-name">Hawk</span> <span class="credit-role">Web Dev</span></div>
+          <div class="credit-row"><span class="credit-name">Samuel</span> <span class="credit-role">Research</span></div>
+          <div class="credit-row"><span class="credit-name">Matthew</span> <span class="credit-role">Research</span></div>
+          <div class="credit-row"><span class="credit-name">Jacob.R</span> <span class="credit-role">Booth</span></div>
+          <div class="credit-row"><span class="credit-name">Jacob.Q</span> <span class="credit-role">???</span></div>
+        </div>
+      </div>
+
+      </div>
+      <!-- Presentation Slides Container -->
+      <div class="presentation-container" id="presentation-wrapper" style="display: none;">
+        <div class="slide active">
+          <h1>Slide 1</h1>
+          <p>
+            <span class="hint-desktop">Use the right arrow to move</span>
+            <span class="hint-touch">Swipe to move</span>
+          </p>
+        </div>
+
+        <div class="slide">
+          <h1>Slide 2</h1>
+          <p>This is the second slide.</p>
+        </div>
+
+        <div class="slide">
+          <h1>Slide 3</h1>
+          <p>Slide 3</p>
+        </div>
+
+        <div class="slide">
+          <canvas id="game" height="400"></canvas>
+
+          <div id="touch-dive"></div>
+          <div id="touch-jump"></div>
+
+          <div id="quiz" class="quiz" hidden>
+            <div class="quiz-card">
+              <p id="quiz-timer"></p>
+              <div class="quiz-bar"><div id="quiz-bar-fill"></div></div>
+              <h2 id="quiz-question"></h2>
+              <div id="quiz-choices"></div>
+            </div>
+          </div>
+
+          <button id="btn-exit">BACK</button>
+          <div id="rotate-hint"><p>Rotate your phone sideways to play</p></div>
+        </div>
+      </div>
+
+    </div> <!-- End crt-screen -->
+  </div> <!-- End arcade-casing -->
 
   <script src="questions.js"></script>
   <script src="script.js"></script>
