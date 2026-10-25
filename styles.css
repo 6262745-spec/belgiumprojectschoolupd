@@ -20,7 +20,7 @@ html, body {
   user-select: none;
 }
 
-/* ---- 2.5D Arcade Cabinet (Enhanced Outer Casing Depth) ---- */
+/* ---- Arcade Cabinet ---- */
 .arcade-casing {
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,7 @@ html, body {
     0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-/* ---- Recessed CRT & Clean 3D Bevel Frame ---- */
+/* ---- Frame ---- */
 @keyframes crtAmbientJitter {
   0% { transform: translate(0, 0); }
   20% { transform: translate(-0.3px, 0.3px); }
@@ -69,8 +69,6 @@ html, body {
   border-radius: 40px / 25px;
   background: #111a2e;
   animation: crtAmbientJitter 4s ease-in-out infinite;
-  
-  /* Clean, uniform 3D depth shadow without stacked stripes at the bottom */
   box-shadow:
     inset 0 0 0 4px #2b2c35,
     inset 0 0 0 9px #050608,
@@ -78,7 +76,7 @@ html, body {
     0 12px 30px rgba(0, 0, 0, 0.7);
 }
 
-/* ---- Subtle Glass Sheen Overlay ---- */
+/* ---- Overlay ---- */
 .crt-screen::before {
   content: " ";
   display: block;
@@ -95,7 +93,7 @@ html, body {
   border-radius: 26px / 16px;
 }
 
-/* ---- CRT Scanlines ---- */
+/* ---- Scanlines ---- */
 .scanlines {
   position: absolute;
   inset: 0;
@@ -110,7 +108,7 @@ html, body {
 }
 
 /* ==========================================
-   LANDING PAGE (FULL HEIGHT DISTRIBUTION)
+   LANDING PAGE
    ========================================== */
 
 .arcade-landing {
@@ -133,7 +131,7 @@ html, body {
     );
 }
 
-/* ---- Credits Terminal Window ---- */
+/* ---- Credits Window ---- */
 .credits-terminal {
   width: 240px;
   left: 2rem;
@@ -196,7 +194,7 @@ html, body {
   letter-spacing: 2px;
 }
 
-/* ---- Raw Screen Telemetry HUD (Top-Left Green Text) ---- */
+/* ---- Telemetry HUD ---- */
 .screen-hud-topleft {
   position: absolute;
   top: 1.5rem;
@@ -250,7 +248,7 @@ html, body {
   letter-spacing: 1px;
 }
 
-/* ---- Unified Terminal Windows (Draggable) ---- */
+/* ---- Terminal Windows ---- */
 .terminal {
   position: absolute;
   background: #090e19;
@@ -263,7 +261,7 @@ html, body {
   overflow: hidden;
 }
 
-/* Globe Terminal Starting Position */
+
 .globe-display-container {
   width: min(100%, 420px);
   aspect-ratio: 16 / 9;
@@ -272,7 +270,7 @@ html, body {
   transform: translateX(-50%);
 }
 
-/* ---- Music Player Terminal ---- */
+
 .music-terminal {
   width: 240px;
   right: 2rem;
@@ -328,7 +326,7 @@ html, body {
   font-weight: bold;
 }
 
-/* Volume Sliders Styling (Retro Phosphor Look) */
+
 .volume-controls-container {
   display: flex;
   flex-direction: column;
@@ -363,7 +361,7 @@ html, body {
   cursor: pointer;
 }
 
-/* Chrome/Safari/Edge Thumb */
+
 .volume-slider-row input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -375,7 +373,7 @@ html, body {
   cursor: pointer;
 }
 
-/* Firefox Thumb */
+
 .volume-slider-row input[type="range"]::-moz-range-thumb {
   width: 12px;
   height: 16px;
@@ -390,7 +388,6 @@ html, body {
   box-shadow: 0 0 10px rgba(163, 255, 71, 0.9);
 }
 
-/* ---- Bruges Preview Terminal Starting Position ---- */
 .side-photo-card {
   width: 260px;
   aspect-ratio: 16 / 11;
@@ -463,7 +460,7 @@ html, body {
   image-rendering: pixelated;
 }
 
-/* ---- Insert Coin Container ---- */
+
 .insert-coin-container {
   display: flex;
   flex-direction: column;
@@ -536,14 +533,13 @@ html, body {
   }
 }
 
-/* ---- Landing Footer ---- */
 .landing-footer {
   color: #4f6180;
   font-size: 0.7rem;
   letter-spacing: 3px;
 }
 
-/* ---- Minimal Corner Credits ---- */
+
 .credits-panel {
   position: absolute;
   left: 1.5rem;
