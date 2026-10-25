@@ -270,6 +270,62 @@ html, body {
   transform: translateX(-50%);
 }
 
+/* ---- Music Player Terminal ---- */
+.music-terminal {
+  width: 220px;
+  right: 2rem;
+  top: 28%;
+  height: fit-content !important;
+  flex: none !important;
+}
+
+.music-body {
+  padding: 0.6rem;
+  background: #0b1326;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.music-display {
+  font-family: "Pixelify Sans", monospace;
+  font-size: 0.7rem;
+  color: #33ff33;
+  background: #050811;
+  padding: 0.3rem;
+  border: 1px solid #1c2b49;
+  text-shadow: 0 0 5px rgba(51, 255, 51, 0.4);
+}
+
+.music-controls-row {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.music-btn {
+  font-family: inherit;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  background: #152238;
+  color: #6a7f9e;
+  border: 1px solid #293752;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.music-btn:hover {
+  background: #293752;
+  color: #33ff33;
+  border-color: #33ff33;
+}
+
+.play-pause-btn {
+  flex: 1;
+  font-weight: bold;
+}
+
 /* ---- Bruges Preview Terminal Starting Position ---- */
 .side-photo-card {
   width: 260px;
