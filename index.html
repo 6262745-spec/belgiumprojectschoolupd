@@ -89,6 +89,31 @@
         </div>
       </div>
 
+      <!-- Music Player Terminal Window -->
+      <div class="terminal music-terminal">
+        <div class="map-screen-header">
+          <span>SYS_AUDIO // JUKER.DAT</span>
+          <span class="terminal-controls">
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+            <span class="control-btn"></span>
+          </span>
+        </div>
+        <div class="music-body">
+          <div class="music-display" id="now-playing">TRACK: [MUTED]</div>
+          <div class="music-controls-row">
+            <button class="music-btn" id="btn-track-prev">&lt;&lt;</button>
+            <button class="music-btn play-pause-btn" id="btn-track-toggle">PLAY</button>
+            <button class="music-btn" id="btn-track-next">&gt;&gt;</button>
+          </div>
+        </div>
+      </div>
+
+      <audio id="bgm-player" loop>
+        <source src="assets/audio/music/arcademusic.mp3" type="audio/mpeg">
+        <source src="assets/audio/music/vhs-noise.mp3" type="audio/mpeg">
+      </audio>
+
       </div>
       <!-- Presentation Slides Container -->
       <div class="presentation-container" id="presentation-wrapper" style="display: none;">
