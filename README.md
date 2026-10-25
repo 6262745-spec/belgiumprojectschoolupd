@@ -3,7 +3,7 @@
   <h1>BELGIUM GEO PROJECT</h1>
 
   <p>
-    <b>An interactive country fair project featuring a PowerPoint-style showcase and a quiz-based side-scroller.</b>
+    <b>An interactive retro-arcade country fair project featuring a multi-terminal showcase and a quiz-based side-scroller mini-game.</b>
   </p>
   <p>
       <a href="https://belgian.netlify.app/"><img src="https://img.shields.io/badge/Live_Demo-Play_Now_(Outdated)-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" /></a> 
@@ -14,7 +14,7 @@
     <!-- Netlify Deploy Status Badge -->
     <a href="https://app.netlify.com/projects/belgian/deploys"><img src="https://api.netlify.com/api/v1/badges/2994bde2-9573-4afc-96f4-9fb4a2cd0e63/deploy-status" alt="Netlify Status" /></a>
   </p>
-  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit based system which means at one point my pushes will fail to deploy for the current cycle... Refer to the status badge on top to see if it's up to date (failed means it's using the latest outdated files); therefore, GitHub Pages is recommended for the most up-to-date live version.</em></p>
+  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit-based system which means at one point my pushes will fail to deploy for the current cycle... Refer to the status badge on top to see if it's up to date (failed means it's using the latest outdated files); therefore, GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="100%" alt="Game in action, static" />
@@ -25,7 +25,7 @@
 
 ## About The Project
 
-A school project built for an upcoming country fair under a tight deadline. While PowerPoint was the standard choice for most, I decided to push myself out of my comfort zone and build an interactive web app from scratch.
+A school project built for an upcoming country fair under a tight deadline. While PowerPoint was the standard choice for most, I decided to push myself out of my comfort zone and build an interactive retro arcade web app from scratch.
 
 > **Developer Note:** This is my 4th JavaScript project. I chose not to use a game framework (like Phaser, PixiJS, or Excalibur) so I could maintain total control over the code, this proved rather painful; causing me potential lasting psychological scars and a broken keycap.
 
@@ -33,15 +33,12 @@ A school project built for an upcoming country fair under a tight deadline. Whil
 
 ## Features & Highlights
 
-- **Mobile Friendly:** touch-screen swipe support for mobile devices
-
-
-- **Parallax Effect:** layered background scrolling for "depth"
-
-
+- **Retro CRT Arcade Interface:** Designed with a 2.5D arcade casing, scanlines, and draggable multi-terminal windows (Globe, Bruges preview, Credits roster, and Jukebox).
+- **Multi-Track Audio Jukebox:** Features selectable background tracks, custom pixel-styled volume sliders (BGM & SFX), and smooth audio crossfading/ducking during trivia transitions.
+- **Interactive Quiz Side-Scroller:** Jump, dive, and dodge obstacles (forks and bees) while managing your health (hearts). Colliding triggers timed trivia questions complete with custom quiz music and audio feedback (`rightanswer.mp3`, `wronganswer.wav`).
+- **Mobile Friendly:** Touch-screen swipe support and on-screen controls for mobile devices.
+- **Parallax Effect:** Layered background scrolling for immersive visual depth.
 - **Pixel Art:** Pixelated art animations generated from sprite sheets.
-
-
 
 <br />
 
@@ -59,16 +56,15 @@ A school project built for an upcoming country fair under a tight deadline. Whil
 
 ## Run Locally
 
-Clone the project and open `index.html` in your browser:
+Clone the project and open it via a local server (recommended for asset path resolution like VS Code Live Server):
 
 ```bash
 # Clone repository
-git clone [https://github.com/arch-devnix/belgiumproject](https://github.com/arch-devnix/belgiumproject)
+git clone [https://github.com/arch-devnix/belgiumproject.git](https://github.com/arch-devnix/belgiumproject.git)
 
 # Navigate to project directory
 cd belgiumproject
 
 # Launch local server (Choose one)
-open index.html          # default
 npx serve                # Node.js
 python3 -m http.server   # Python 3
