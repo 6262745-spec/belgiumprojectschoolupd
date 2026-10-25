@@ -42,6 +42,24 @@ A school project built for an upcoming country fair under a tight deadline. Whil
 
 <br />
 
+## Design Choices
+
+When I heard a country fair was coming up and a presentation was due for each term, I decided I was going to make a website with the core idea being a side-scroller to add interactivity for the class. Then, I realized if I was going to make a website, I wouldn't have native PowerPoint capabilities like sliding motions and transitions, so why not just make my own "system" with simple JS (moving to another `.slide` index based on arrow keys pressed)? I then added nice CSS animations. 
+
+### 1. Engine & Visual Architecture
+Now that I had all of that done, I realized that the game looked incredibly boring. I used static sprites and the original canvas didn't even fill the screen, so I added animated sprites, parallax effects, and also improved object spawning by implementing a weighted bag randomizer paired with a compound pattern queue, followed by simple physics-based procedural spacing. I decided not to use object pooling because the ROI wasn't worth it; my current system was working efficiently due to JS's already amazing garbage collection. 
+
+### 2. Retro CRT UI & Immersion
+Later, I got bored after coming back from an activity so I just decided to lock in and give the web app a nice retro terminal look with scanlines and draggable terminal windows. My favorite part was the 2.5D arcade casing, and I chose to implement that because I really wanted the class to feel immersed, and a low-cost way to do that was in fact the casing. Once that was done, I added music, SFX, and nice touches.
+
+### 3. Technical Challenges & Balancing
+The most difficult part—aside from not using a game framework or engine—was actually the randomized-bag weighted spawner paired with the physics-driven dynamic gap calculation because they had to balance two things: randomness and strict fairness. My bag randomizer was designed to provide variety, yet the physics math had to act as a "warden," one could say. I needed fun layouts while also considering the fact that every single combo needed to be mathematically beatable.
+
+### 4. Personal Takeaways
+I learnt a lot from this project. I learnt not just the syntax of JS, but it actually helped me grow as a dev as a whole. There are so many aspects of making enjoyable or non-trivial programs that I never even considered at the start of my development journey. Going into this, I didn't ever realize I was going to be tracking the location of each cell of a sprite sheet on a heavily enclosed pixelated globe that I took online. I learnt various things such as pixel art, UX, algorithms, organization, and more. I hope to keep growing as a developer!...
+
+<br />
+
 ## Built With
 
 <p>
