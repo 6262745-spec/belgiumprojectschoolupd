@@ -139,6 +139,7 @@ html, body {
   left: 2rem;
   bottom: 5.5rem;
   height: fit-content !important;
+  max-height: fit-content !important;
   flex: none !important;
 }
 
@@ -149,7 +150,8 @@ html, body {
   flex-direction: column;
   gap: 0.3rem;
   text-align: left;
-  height: auto;
+  height: auto !important;
+  flex: none !important;
 }
 
 .subtitle {
@@ -272,7 +274,7 @@ html, body {
 
 /* ---- Music Player Terminal ---- */
 .music-terminal {
-  width: 220px;
+  width: 240px;
   right: 2rem;
   top: 28%;
   height: fit-content !important;
@@ -324,6 +326,68 @@ html, body {
 .play-pause-btn {
   flex: 1;
   font-weight: bold;
+}
+
+/* Volume Sliders Styling (Retro Phosphor Look) */
+.volume-controls-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.2rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid #1c2b49;
+}
+
+.volume-slider-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  color: #33ff33;
+  text-shadow: 0 0 4px rgba(51, 255, 51, 0.4);
+}
+
+.volume-slider-row label {
+  letter-spacing: 1px;
+}
+
+.volume-slider-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 110px;
+  height: 8px;
+  background: #050811;
+  border: 1px solid #1c2b49;
+  outline: none;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+/* Chrome/Safari/Edge Thumb */
+.volume-slider-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 16px;
+  background: #33ff33;
+  border: 1px solid #152238;
+  box-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
+  cursor: pointer;
+}
+
+/* Firefox Thumb */
+.volume-slider-row input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 16px;
+  background: #33ff33;
+  border: 1px solid #152238;
+  box-shadow: 0 0 6px rgba(51, 255, 51, 0.8);
+  cursor: pointer;
+}
+
+.volume-slider-row input[type="range"]:hover::-webkit-slider-thumb {
+  background: #a3ff47;
+  box-shadow: 0 0 10px rgba(163, 255, 71, 0.9);
 }
 
 /* ---- Bruges Preview Terminal Starting Position ---- */
@@ -393,8 +457,8 @@ html, body {
 }
 
 .pixel-globe-gif {
-  width: 148px;
-  height: 148px;
+  width: 200px;
+  height: 200px;
   object-fit: contain;
   image-rendering: pixelated;
 }
