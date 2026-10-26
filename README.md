@@ -1,20 +1,15 @@
 <div align="center">
 
   <h1>BELGIUM GEO PROJECT</h1>
+  <h1>SCHOOL UPDATED VERSION, DONT USE, EXPERIMENTAL</h1>
 
   <p>
     <b>An interactive retro-arcade country fair project featuring a multi-terminal showcase and a quiz-based side-scroller mini-game.</b>
   </p>
   <p>
-      <a href="https://belgian.netlify.app/"><img src="https://img.shields.io/badge/Live_Demo-Play_Now_(Outdated)-brightgreen?style=for-the-badge&logo=netlify" alt="Live Demo" /></a> 
-      <a href="https://arch-devnix.github.io/belgiumproject/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> 
+      <a href="https://arch-devnix.github.io/belgiumprojectschoolupd/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> 
       <a href="https://github.com/arch-devnix/belgiumproject/"><img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" /></a>
   </p>
-  <p>
-    <!-- Netlify Deploy Status Badge -->
-    <a href="https://app.netlify.com/projects/belgian/deploys"><img src="https://api.netlify.com/api/v1/badges/2994bde2-9573-4afc-96f4-9fb4a2cd0e63/deploy-status" alt="Netlify Status" /></a>
-  </p>
-  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit-based system, which means at some point my pushes will fail to deploy for the current cycle. Check the status badge above to see if it's up to date (if it says failed, Netlify is still serving older files). GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="50%" alt="Game in action, static" />
