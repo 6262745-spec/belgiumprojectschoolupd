@@ -14,7 +14,7 @@
     <!-- Netlify Deploy Status Badge -->
     <a href="https://app.netlify.com/projects/belgian/deploys"><img src="https://api.netlify.com/api/v1/badges/2994bde2-9573-4afc-96f4-9fb4a2cd0e63/deploy-status" alt="Netlify Status" /></a>
   </p>
-  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit-based system which means at one point my pushes will fail to deploy for the current cycle... Refer to the status badge on top to see if it's up to date (failed means it's using the latest outdated files); therefore, GitHub Pages is recommended for the most up-to-date live version.</em></p>
+  <p><em>💡<b>Hosting Note:</b> Netlify runs on a credit-based system, which means at some point my pushes will fail to deploy for the current cycle. Check the status badge above to see if it's up to date (if it says failed, Netlify is still serving older files). GitHub Pages is recommended for the most up-to-date live version.</em></p>
   <br />
 
   <img src="previews/gamepre.png" width="50%" alt="Game in action, static" />
@@ -34,12 +34,16 @@ A school project built for an upcoming country fair under a tight deadline. Whil
 
 ## Features & Highlights
 
-- **Retro CRT Arcade Interface:** Designed with a 2.5D arcade casing, scanlines, and draggable multi-terminal windows (Globe, Bruges preview, Credits roster, and Jukebox).
-- **Multi-Track Audio Jukebox:** Features selectable background tracks, custom pixel-styled volume sliders (BGM & SFX), and smooth audio crossfading/ducking during trivia transitions.
-- **Interactive Quiz Side-Scroller:** Jump, dive, and dodge obstacles (forks and bees) while managing your health (hearts). Colliding triggers timed trivia questions complete with custom quiz music and audio feedback (`rightanswer.mp3`, `wronganswer.wav`).
-- **Mobile Friendly:** Touch-screen swipe support and on-screen controls for mobile devices.
+- **Retro CRT Arcade Interface:** A 2.5D arcade casing with scanlines, a CRT "power-on" boot effect, an RGB-split title glitch, and draggable multi-terminal windows (Globe, Bruges preview, Credits roster, and Jukebox) that "lift" while being dragged. On smaller screens, some panels are hidden so nothing overlaps.
+- **Custom GSAP Cursor:** A pixel-box cursor that reacts to what it's over: it wraps around buttons, labels links, frames images, shows a live volume % on the sliders, and pops up a Belgian fries sprite on a hidden easter egg.
+- **Animated Intro Slide:** Text reveals, counting stats, and a 3D tilt-and-glare effect on the featured image.
+- **Custom Slide System:** Arrow-key and swipe navigation between slides, with a pixel-style progress indicator.
+- **Multi-Track Audio Jukebox:** Selectable background tracks, custom pixel-styled volume sliders (BGM & SFX), and smooth audio crossfading/ducking during trivia transitions.
+- **Interactive Quiz Side-Scroller:** Jump, dive, and dodge obstacles (forks and bees) while managing your health (hearts). Colliding shakes the screen and triggers timed trivia questions in an arcade terminal popup, complete with custom quiz music and audio feedback (`rightanswer.mp3`, `wronganswer.wav`).
+- **Mobile Supported (Desktop Recommended):** Touch-screen swipe support and on-screen game controls for mobile devices.
 - **Parallax Effect:** Layered background scrolling for immersive visual depth.
 - **Pixel Art:** Pixelated art animations generated from sprite sheets.
+- **Accessibility:** Visible keyboard focus outlines, and animations are toned down or disabled when the system's reduced-motion setting is on.
 
 <br />
 
@@ -67,24 +71,29 @@ I learnt a lot from this project. I learnt not just the syntax of JS, but it act
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3" />
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/GSAP-88CE02?style=flat-square&logo=greensock&logoColor=black" alt="GSAP" />
   <img src="https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white" alt="Netlify" />
   <img src="https://img.shields.io/badge/Github_Pages-black?style=flat-square&logo=Github&logoColor=white" alt="Github Pages" />
 </p>
+
+> GSAP is used only for UI animation (custom cursor, intro slide effects). The game itself runs on plain Canvas 2D with no framework.
 
 <br />
 
 ## Run Locally
 
-Clone the project and open it via a local server (recommended for asset path resolution like VS Code Live Server):
+Clone the project and open it through a local server (recommended so asset paths resolve correctly; VS Code Live Server also works):
 
 ```bash
 # Clone repository
-git clone 'https://github.com/arch-devnix/belgiumproject.git'
+git clone https://github.com/arch-devnix/belgiumproject.git
 
 # Navigate to project directory
 cd belgiumproject
 
-# Launch local server (Choose one)
+# Launch local server (choose one)
 npx serve                # Node.js
 python3 -m http.server   # Python 3
+```
 
+Then open the URL printed in the terminal (e.g. `http://localhost:3000` for `npx serve`, `http://localhost:8000` for Python).
