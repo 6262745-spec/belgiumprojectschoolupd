@@ -7,7 +7,7 @@
     <b>An interactive retro-arcade country fair project featuring a multi-terminal showcase and a quiz-based side-scroller mini-game.</b>
   </p>
   <p>
-      <a href="https://arch-devnix.github.io/belgiumprojectschoolupd/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> 
+      <a href="https://6262745-spec.github.io/belgiumprojectschoolupd/"><img src="https://img.shields.io/badge/Live_Demo-GitHub_(Live)-24292e?style=for-the-badge&logo=github" alt="Play on GitHub" /></a> 
       <a href="https://github.com/arch-devnix/belgiumproject/"><img src="https://img.shields.io/badge/JavaScript-4th_Project-yellow?style=for-the-badge&logo=javascript" alt="JS Project" /></a>
   </p>
   <br />
