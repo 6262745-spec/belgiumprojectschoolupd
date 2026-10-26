@@ -1,4 +1,4 @@
-/* slide1.css - Slide 1 (Intro) styling. All classes are prefixed "s1-". */
+/* slide1.css */
 
 .slide.s1 {
   display: flex;
@@ -11,7 +11,6 @@
   background: radial-gradient(ellipse at 15% 0%, #1c2b49 0%, #111a2e 55%, #090e19 100%);
 }
 
-/* Subtle blueprint grid behind everything */
 .slide.s1::before {
   content: "";
   position: absolute;
@@ -40,7 +39,6 @@
   text-align: left;
 }
 
-/* ---- Header ---- */
 .s1-head {
   grid-column: 1 / -1;
 }
@@ -86,7 +84,6 @@
   white-space: nowrap;
 }
 
-/* ---- Split-text masking structures (Required for GSAP script) ---- */
 .s1-mask {
   display: inline-block;
   overflow: hidden;
@@ -101,7 +98,6 @@
   will-change: transform, opacity;
 }
 
-/* ---- Text column ---- */
 .s1-text {
   display: flex;
   flex-direction: column;
@@ -117,8 +113,6 @@
   margin: 0;
 }
 
-/* Dashed underline only appears on the words as they rise in, 
-   and the highlighter sweep is hidden (--hl: 0) until GSAP animates it */
 .s1-hl {
   --hl: 0;
   color: #f7df1e;
@@ -144,7 +138,6 @@
   text-shadow: 0 0 10px rgba(247, 223, 30, 0.55);
 }
 
-/* ---- Quote ---- */
 .s1-quote {
   position: relative;
   margin: 0;
@@ -179,7 +172,6 @@
   color: #6a7f9e;
 }
 
-/* ---- Stats Section ---- */
 .s1-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -209,7 +201,6 @@
   text-transform: uppercase;
 }
 
-/* ---- Image Frame column + 3D tilt ---- */
 .s1-figure {
   position: relative;
   margin: 0;
@@ -255,7 +246,6 @@
   background: #0b1326;
 }
 
-/* ---- Glare sheen ---- */
 .s1-glare {
   position: absolute;
   inset: 0;
@@ -285,7 +275,6 @@
   will-change: transform, opacity;
 }
 
-/* ---- GSAP Cursor Box + Pixel Fry Sprite ---- */
 .s1-has-cursor .slide.s1,
 .s1-has-cursor .slide.s1 * {
   cursor: none;
@@ -324,7 +313,6 @@
   transition: opacity 0.18s ease;
 }
 
-/* Cursor states */
 #gsap-cursor.is-hl {
   width: 36px;
   height: 36px;
@@ -362,7 +350,6 @@
   color: #090e19;
 }
 
-/* Pixelated Belgian Fry Cone Sprite */
 #gsap-sprite-fry {
   position: absolute;
   left: 34px;
@@ -385,7 +372,6 @@
   filter: drop-shadow(3px 4px 0 rgba(5, 8, 17, 0.85));
 }
 
-/* ---- Navigation Hints ---- */
 .s1-footer {
   position: absolute;
   left: 0;
@@ -398,7 +384,6 @@
   pointer-events: none;
 }
 
-/* ---- Viewport Responsiveness Overrides ---- */
 @media (max-width: 960px), (max-height: 600px) {
   .slide.s1 {
     justify-content: flex-start;

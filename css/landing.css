@@ -1,11 +1,9 @@
-/* landing.css - Landing page intro + INSERT COIN effects. */
+/* landing.css */
 
-/* Hidden until landing.js has set up the intro (index.html has a 3s failsafe) */
 .boot #arcade-landing {
   visibility: hidden;
 }
 
-/* Title letters (created by landing.js) */
 .l-mask {
   display: inline-block;
   overflow: hidden;
@@ -19,7 +17,6 @@
   will-change: transform;
 }
 
-/* Wrapper that the magnetic pull moves, so the button's own CSS is untouched */
 .coin-magnet {
   display: inline-block;
   will-change: transform;
@@ -29,7 +26,6 @@
   display: inline-block;
 }
 
-/* Arcade-style blinking credit counter */
 .hud-credits {
   animation: l-blink 1s steps(2, start) infinite;
 }
@@ -43,7 +39,6 @@
   to { visibility: hidden; }
 }
 
-/* Full-screen flash used for the coin-drop cut (created by landing.js) */
 .coin-flash {
   position: fixed;
   inset: 0;
