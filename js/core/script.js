@@ -59,6 +59,41 @@ function playIntroSlide() {
   if (window.Slide1) window.Slide1.play();
 }
 
+// --- SLIDE PROGRESS INDICATOR ---
+const progressEl = document.getElementById('slide-progress');
+const progressLabel = progressEl ? progressEl.querySelector('.slide-progress-label') : null;
+const progressDots = progressEl ? progressEl.querySelector('.slide-progress-dots') : null;
+
+function pad2(n) {
+  return n < 10 ? '0' + n : String(n);
+}
+
+if (progressDots) {
+  for (let i = 0; i < slides.length; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'slide-progress-dot';
+    progressDots.appendChild(dot);
+  }
+}
+
+function updateProgress(index) {
+  if (!progressEl) return;
+
+  if (progressLabel) {
+    progressLabel.textContent = 'FILE ' + pad2(index + 1) + ' / ' + pad2(slides.length);
+  }
+
+  if (progressDots) {
+    const dots = progressDots.children;
+    for (let i = 0; i < dots.length; i++) {
+      dots[i].classList.toggle('is-active', i === index);
+    }
+  }
+
+  // Keep the game screen clean
+  progressEl.classList.toggle('is-hidden', !!slides[index].querySelector('#game'));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('button, .hud-link').forEach(btn => {
     btn.addEventListener('click', () => playSfx('sfx-click'));
@@ -88,6 +123,7 @@ document.getElementById('btn-insert-coin').addEventListener('click', () => {
   // Click sound is already played by the generic button listener above
   document.getElementById('arcade-landing').style.display = 'none';
   document.getElementById('presentation-wrapper').style.display = 'block';
+  updateProgress(currentSlideIndex);
   playIntroSlide();
 });
 
@@ -98,6 +134,8 @@ function showSlide(index) {
     slides[i].classList.toggle('active', i === index);
     slides[i].classList.toggle('prev', i < index);
   }
+
+  updateProgress(index);
 
   if (index === 0) {
     playIntroSlide();
@@ -236,9 +274,18 @@ if (trackToggleBtn && bgmPlayer) {
   });
 }
 
+// --- DRAGGABLE TERMINALS ---
 document.addEventListener("DOMContentLoaded", () => {
   const terminals = document.querySelectorAll(".terminal");
   let highestZ = 25;
+
+  function pointerXY(e) {
+    if (e.type.includes("touch")) {
+      const t = e.touches[0] || e.changedTouches[0];
+      return { x: t.clientX, y: t.clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  }
 
   terminals.forEach((terminal) => {
     const header = terminal.querySelector(".map-screen-header");
@@ -252,28 +299,30 @@ document.addEventListener("DOMContentLoaded", () => {
     function dragStart(e) {
       if (e.target.closest(".control-btn") || e.target.closest("button")) return;
 
+      // Measure the REAL on-screen position (includes transforms like translateX(-50%))
+      const parent = terminal.offsetParent || document.body;
+      const r = terminal.getBoundingClientRect();
+      const pr = parent.getBoundingClientRect();
+      initialLeft = r.left - pr.left - parent.clientLeft;
+      initialTop = r.top - pr.top - parent.clientTop;
+
+      // Stop any GSAP intro tween still holding a transform
+      if (typeof gsap !== "undefined") gsap.killTweensOf(terminal);
+
       highestZ++;
       terminal.style.zIndex = highestZ;
-
-      // FIX: Capture position based strictly on its layout offset parent, ignoring window scroll/flex positioning
-      initialLeft = terminal.offsetLeft;
-      initialTop = terminal.offsetTop;
-
-      // Force positions to lock precisely onto calculated relative layout spots
       terminal.style.transform = "none";
       terminal.style.margin = "0";
       terminal.style.left = `${initialLeft}px`;
       terminal.style.top = `${initialTop}px`;
       terminal.style.right = "auto";
       terminal.style.bottom = "auto";
+      terminal.classList.add("is-dragging");
 
       isDragging = true;
-
-      const clientX = e.type.includes("touch") ? e.touches.clientX : e.clientX;
-      const clientY = e.type.includes("touch") ? e.touches.clientY : e.clientY;
-
-      startX = clientX;
-      startY = clientY;
+      const p = pointerXY(e);
+      startX = p.x;
+      startY = p.y;
 
       if (e.cancelable) e.preventDefault();
     }
@@ -281,45 +330,37 @@ document.addEventListener("DOMContentLoaded", () => {
     function dragMove(e) {
       if (!isDragging) return;
 
-      const clientX = e.type.includes("touch") ? e.touches.clientX : e.clientX;
-      const clientY = e.type.includes("touch") ? e.touches.clientY : e.clientY;
-
-      // Calculate shift from click starting point
-      const dx = clientX - startX;
-      const dy = clientY - startY;
-
-      let newLeft = initialLeft + dx;
-      let newTop = initialTop + dy;
-
-      // Clamp layouts within parent box limits so they don't break arcade boundaries
+      const p = pointerXY(e);
       const parent = terminal.offsetParent || document.body;
       const maxLeft = parent.clientWidth - terminal.offsetWidth - 10;
       const maxTop = parent.clientHeight - terminal.offsetHeight - 10;
-      
-      newLeft = Math.max(10, Math.min(newLeft, maxLeft));
-      newTop = Math.max(10, Math.min(newTop, maxTop));
+
+      const newLeft = Math.max(10, Math.min(initialLeft + p.x - startX, maxLeft));
+      const newTop = Math.max(10, Math.min(initialTop + p.y - startY, maxTop));
 
       terminal.style.left = `${newLeft}px`;
       terminal.style.top = `${newTop}px`;
     }
 
     function dragEnd() {
+      if (!isDragging) return;
       isDragging = false;
+      terminal.classList.remove("is-dragging");
     }
 
-    // Mouse Listeners
     header.addEventListener("mousedown", dragStart);
     window.addEventListener("mousemove", dragMove);
     window.addEventListener("mouseup", dragEnd);
 
-    // Touch Listeners
     header.addEventListener("touchstart", dragStart, { passive: false });
     window.addEventListener("touchmove", dragMove, { passive: false });
     window.addEventListener("touchend", dragEnd);
   });
 });
 
-// --- CURSOR ---
+// --- GLOBAL GSAP CUSTOM CURSOR & FRY SPRITE ---
+// GSAP only handles POSITION + OPACITY. All size/color changes are CSS classes
+// with CSS transitions, so the two systems never fight over the same property.
 document.addEventListener('DOMContentLoaded', () => {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -327,17 +368,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const label = cursor ? cursor.querySelector(".gsap-cursor-label") : null;
   const frySprite = document.getElementById("gsap-sprite-fry");
 
-  if (!cursor || reduceMotion.matches || !finePointer.matches) return;
+  if (!cursor || typeof gsap === "undefined" || reduceMotion.matches || !finePointer.matches) return;
 
   document.body.classList.add("s1-has-cursor");
   gsap.set(cursor, { xPercent: -50, yPercent: -50 });
 
-  const moveX = gsap.quickTo(cursor, "x", { duration: 0.22, ease: "power3.out" });
-  const moveY = gsap.quickTo(cursor, "y", { duration: 0.22, ease: "power3.out" });
+  const moveX = gsap.quickTo(cursor, "x", { duration: 0.1, ease: "power3.out" });
+  const moveY = gsap.quickTo(cursor, "y", { duration: 0.1, ease: "power3.out" });
+
+  const STATE_CLASSES = ["is-hl", "is-fries", "is-frame", "is-link", "is-btn", "is-range"];
 
   let visible = false;
   let fryBobTween = null;
   let fryRockTween = null;
+  let currentState = null;
+  let hoverBtn = null;
+  let draggingRange = null;
+  let mouseX = 0;
+  let mouseY = 0;
+
+  function rangePct(r) {
+    const min = parseFloat(r.min) || 0;
+    const max = parseFloat(r.max) || 1;
+    return Math.round((parseFloat(r.value) - min) / (max - min) * 100) + "%";
+  }
 
   function showCursor() {
     if (visible) return;
@@ -347,7 +401,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function hideCursor() {
     visible = false;
+    draggingRange = null;
+    cursor.classList.remove("is-pressed");
     hideFrySprite();
+    setCursorState(null, "", null);
     gsap.to(cursor, { opacity: 0, duration: 0.2, overwrite: "auto" });
   }
 
@@ -377,65 +434,120 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.to(frySprite, { opacity: 0, scale: 0.35, y: 10, rotation: 12, duration: 0.2, ease: "power2.in", overwrite: "auto" });
   }
 
-  function setCursorState(state, text) {
-      cursor.classList.remove("is-hl", "is-fries", "is-frame", "is-link", "is-btn");
-      if (state) cursor.classList.add(state);
-      if (label) label.textContent = text || "";
+  function setCursorState(state, text, btn) {
+    btn = btn || null;
+    if (currentState === state && hoverBtn === btn) {
+      if (label && text !== undefined) label.textContent = text || "";
+      return;
     }
 
-    // Universal hover state checks for any slide element
-    document.addEventListener("mouseover", function (e) {
-      if (!presentationIsOpen()) return;
-      const t = e.target;
+    const leavingBtn = hoverBtn && !btn;
+    currentState = state;
+    hoverBtn = btn;
 
-      if (t.closest("a")) {
-        setCursorState("is-link", "[OPEN]");
-      } else if (t.closest("button") || t.closest(".music-btn") || t.closest(".insert-coin-btn")) {
-        // Expands the box size like a link, but uses 'is-btn' so it doesn't fill solid
-        setCursorState("is-btn", "");
-      } else if (t.closest("[data-sprite='fries']")) {
-        setCursorState("is-fries", "");
-      } else if (t.closest(".s1-figure")) {
-        setCursorState("is-frame", "[GHENT]");
-      } else if (t.closest(".s1-hl, .s1-title, p, h1, h2, h3")) {
-        setCursorState("is-hl", "");
-      } else {
-        setCursorState(null, "");
-      }
-    });
+    cursor.classList.remove.apply(cursor.classList, STATE_CLASSES);
 
-  // Track mouse movement globally across the entire page (landing + presentation)
+    if (btn) {
+      // offsetWidth/Height ignore transforms, so the magnet effect can't distort the size
+      const radius = window.getComputedStyle(btn).borderRadius;
+      cursor.style.setProperty("--btn-w", (btn.offsetWidth + 10) + "px");
+      cursor.style.setProperty("--btn-h", (btn.offsetHeight + 8) + "px");
+      cursor.style.setProperty("--btn-r", radius && radius !== "0px" ? radius : "3px");
+    }
+
+    if (state) cursor.classList.add(state);
+    if (label) label.textContent = text || "";
+
+    // When leaving a button, glide back to the real pointer
+    if (leavingBtn) {
+      moveX(mouseX);
+      moveY(mouseY);
+    }
+  }
+
+  // Keep the outline centered on the hovered button, even while it moves (coin magnet)
+  gsap.ticker.add(function () {
+    if (!hoverBtn) return;
+    const r = hoverBtn.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) {
+      // Button was hidden (e.g. landing closed) - release it
+      setCursorState(null, "", null);
+      return;
+    }
+    moveX(r.left + r.width / 2);
+    moveY(r.top + r.height / 2);
+  });
+
   document.addEventListener("mousemove", function (e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
     if (!visible) {
-      gsap.set(cursor, { x: e.clientX, y: e.clientY });
+      gsap.set(cursor, { x: mouseX, y: mouseY });
     }
-    moveX(e.clientX);
-    moveY(e.clientY);
+    if (!hoverBtn) {
+      moveX(mouseX);
+      moveY(mouseY);
+    }
     showCursor();
   });
 
-  document.addEventListener("mouseleave", hideCursor);
+  // Reliable "pointer left the window" detection
+  document.addEventListener("mouseout", function (e) {
+    if (!e.relatedTarget) hideCursor();
+  });
+  window.addEventListener("blur", hideCursor);
 
+  // Hover states with strict top-down priority
   document.addEventListener("mouseover", function (e) {
+    if (draggingRange) return; // stay in slider mode while dragging
     const t = e.target;
+    if (!t.closest) return;
+    const btn = t.closest("button");
+    const range = t.closest('input[type="range"]');
 
-    if (t.closest("a")) {
-      setCursorState("is-link", "[OPEN]");
-    } else if (t.closest("button") || t.closest(".music-btn") || t.closest(".insert-coin-btn")) {
-      // Expands the box normally on ALL buttons without filling solid or showing text
-      setCursorState("is-btn", "");
-    } else if (t.closest("[data-sprite='fries']")) {
-      setCursorState("is-fries", "");
+    if (t.closest("[data-sprite='fries']")) {
+      setCursorState("is-fries", "", null);
     } else if (t.closest(".s1-figure")) {
-      setCursorState("is-frame", "[GHENT]");
-    } else if (t.closest(".s1-hl, .s1-title, p, h1, h2, h3")) {
-      setCursorState("is-hl", "");
+      setCursorState("is-frame", "[GHENT]", null);
+    } else if (t.closest("a, .hud-link")) {
+      setCursorState("is-link", "[OPEN]", null);
+    } else if (range) {
+      setCursorState("is-range", rangePct(range), null);
+    } else if (btn) {
+      setCursorState("is-btn", "", btn);
+    } else if (t.closest(".s1-hl, .s1-title, h1, h2, h3, p")) {
+      setCursorState("is-hl", "", null);
     } else {
-      setCursorState(null, "");
+      setCursorState(null, "", null);
     }
   });
 
-  // Bind fry sprite pop to elements with [data-sprite="fries"] across the presentation
+  // Live % readout while the slider moves
+  document.addEventListener("input", function (e) {
+    if (e.target.matches && e.target.matches('input[type="range"]') && currentState === "is-range" && label) {
+      label.textContent = rangePct(e.target);
+    }
+  });
+
+  // Press squash + keep slider mode during a drag
+  document.addEventListener("mousedown", function (e) {
+    cursor.classList.add("is-pressed");
+    const range = e.target.closest && e.target.closest('input[type="range"]');
+    if (range) draggingRange = range;
+  });
+
+  document.addEventListener("mouseup", function (e) {
+    cursor.classList.remove("is-pressed");
+    if (draggingRange) {
+      draggingRange = null;
+      // Re-check what's under the pointer now that the drag is over
+      const under = document.elementFromPoint(e.clientX, e.clientY);
+      if (under) under.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+    }
+  });
+
+  // Fry sprite pop for elements with [data-sprite="fries"]
   document.addEventListener("mouseenter", function (e) {
     if (e.target.closest && e.target.closest("[data-sprite='fries']")) {
       showFrySprite();

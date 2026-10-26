@@ -20,6 +20,12 @@ html, body {
   user-select: none;
 }
 
+/* ---- Keyboard focus (visible even with the custom cursor) ---- */
+:focus-visible {
+  outline: 2px dashed #f7df1e;
+  outline-offset: 3px;
+}
+
 /* ---- Arcade Cabinet ---- */
 .arcade-casing {
   width: 100vw;
@@ -45,12 +51,12 @@ html, body {
 }
 
 /* ---- Frame ---- */
+/* Whole-pixel glitch every few seconds (sub-pixel jitter blurred all text) */
 @keyframes crtAmbientJitter {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-0.3px, 0.3px); }
-  40% { transform: translate(0.3px, -0.3px); }
-  60% { transform: translate(-0.2px, -0.2px); }
-  80% { transform: translate(0.2px, 0.2px); }
+  0%   { transform: translate(0, 0); }
+  94%  { transform: translate(0, 0); }
+  95%  { transform: translate(1px, 0); }
+  97%  { transform: translate(-1px, 1px); }
   100% { transform: translate(0, 0); }
 }
 
@@ -68,7 +74,7 @@ html, body {
   border: 14px solid #14151a;
   border-radius: 40px / 25px;
   background: #111a2e;
-  animation: crtAmbientJitter 4s ease-in-out infinite;
+  animation: crtAmbientJitter 6s step-end infinite;
   box-shadow:
     inset 0 0 0 4px #2b2c35,
     inset 0 0 0 9px #050608,
@@ -111,6 +117,14 @@ html, body {
    LANDING PAGE
    ========================================== */
 
+/* CRT "power on": thin bright line that expands into the picture */
+@keyframes crtPowerOn {
+  0%   { transform: scale(1, 0.004); filter: brightness(4); }
+  40%  { transform: scale(1, 0.004); filter: brightness(4); }
+  70%  { transform: scale(1, 1.04);  filter: brightness(1.6); }
+  100% { transform: scale(1, 1);     filter: brightness(1); }
+}
+
 .arcade-landing {
   position: absolute;
   inset: 0;
@@ -129,6 +143,7 @@ html, body {
       #111a2e 58%,
       #090e19 100%
     );
+  animation: crtPowerOn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .credits-terminal {
@@ -149,6 +164,31 @@ html, body {
   text-align: left;
   height: auto !important;
   flex: none !important;
+}
+
+.credit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  padding: 0.1rem 0;
+  border-bottom: 1px dashed #1c2b49;
+}
+
+.credit-row:last-child {
+  border-bottom: none;
+}
+
+.credit-name {
+  color: #33ff33;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.3);
+}
+
+.credit-role {
+  color: #6a7f9e;
+  letter-spacing: 1px;
 }
 
 .subtitle {
@@ -173,6 +213,13 @@ html, body {
   letter-spacing: 4px;
 }
 
+/* RGB split glitch on the title every few seconds */
+@keyframes titleGlitch {
+  0%, 92%, 100% { text-shadow: 3px 3px 0 #a88d00, 6px 6px 0 #080b14; }
+  93% { text-shadow: -3px 0 0 #ff2a6d, 3px 0 0 #05d9e8, 6px 6px 0 #080b14; }
+  95% { text-shadow: 3px 0 0 #ff2a6d, -3px 0 0 #05d9e8, 6px 6px 0 #080b14; }
+}
+
 .arcade-landing .game-title {
   margin: 0;
   color: #f7df1e;
@@ -183,6 +230,7 @@ html, body {
     3px 3px 0 #a88d00,
     6px 6px 0 #080b14;
   margin-bottom: 0.2rem;
+  animation: titleGlitch 5s steps(1) infinite;
 }
 
 .arcade-landing .subtitle {
@@ -258,12 +306,28 @@ html, body {
   position: absolute;
   background: #090e19;
   border: 2px solid #293752;
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.6),
     inset 0 0 10px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, rotate 0.15s ease;
+}
+
+/* Terminal "lifts" while being dragged */
+.terminal.is-dragging {
+  border-color: #33ff33;
+  rotate: -1deg;
+  box-shadow:
+    0 0 0 1px #33ff33,
+    0 0 18px rgba(51, 255, 51, 0.35),
+    0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.terminal.is-dragging .map-screen-header {
+  background: #1c2b49;
+  color: #33ff33;
 }
 
 .globe-display-container {
@@ -298,6 +362,14 @@ html, body {
   background: #050811;
   padding: 0.3rem;
   border: 1px solid #1c2b49;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Blinking caret (l-blink keyframes live in landing.css) */
+.music-display::after {
+  content: "_";
+  animation: l-blink 1s steps(2, start) infinite;
 }
 
 .music-controls-row {
@@ -314,12 +386,19 @@ html, body {
   color: #6a7f9e;
   border: 1px solid #293752;
   cursor: pointer;
+  box-shadow: 0 2px 0 #050811;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease;
 }
 
 .music-btn:hover {
   background: #293752;
   color: #33ff33;
   border-color: #33ff33;
+}
+
+.music-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #050811;
 }
 
 .play-pause-btn {
@@ -355,6 +434,11 @@ html, body {
   cursor: pointer;
 }
 
+.volume-slider-row input[type="range"]:focus-visible {
+  outline: 2px dashed #f7df1e;
+  outline-offset: 3px;
+}
+
 .volume-slider-row input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -362,7 +446,16 @@ html, body {
   height: 16px;
   background: #33ff33;
   border: 1px solid #152238;
-  cursor: pointer;
+  cursor: none;
+}
+
+.volume-slider-row input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 16px;
+  background: #33ff33;
+  border: 1px solid #152238;
+  border-radius: 0;
+  cursor: none;
 }
 
 .side-photo-card {
@@ -397,6 +490,7 @@ html, body {
   text-align: left;
   border-bottom: 1px solid #293752;
   user-select: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .terminal-controls {
@@ -418,7 +512,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: 
+  background-image:
     linear-gradient(rgba(41, 55, 82, 0.15) 1px, transparent 1px),
     linear-gradient(90deg, rgba(41, 55, 82, 0.15) 1px, transparent 1px);
   background-size: 12px 12px;
@@ -428,6 +522,7 @@ html, body {
 .pixel-globe-gif {
   width: 200px;
   height: 200px;
+  max-height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
 }
@@ -457,6 +552,18 @@ html, body {
   box-shadow:
     0 4px 0 #a88d00,
     0 7px 0 #080b14;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.15s ease;
+}
+
+.insert-coin-btn:hover {
+  filter: brightness(1.08);
+}
+
+.insert-coin-btn:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 0 0 #a88d00,
+    0 3px 0 #080b14;
 }
 
 .coin-symbol {
@@ -475,6 +582,30 @@ html, body {
   color: #4f6180;
   font-size: 0.7rem;
   letter-spacing: 3px;
+}
+
+/* ---- Medium screens: stop the landing panels from overlapping ---- */
+@media (max-width: 1100px), (max-height: 720px) {
+  .side-photo-card,
+  .credits-terminal {
+    display: none;
+  }
+
+  .globe-display-container {
+    width: min(80%, 340px);
+    top: 30%;
+  }
+
+  .music-terminal {
+    top: auto;
+    bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .screen-hud-topleft {
+    display: none;
+  }
 }
 
 /* ==========================================
@@ -547,8 +678,52 @@ canvas {
   z-index: 10;
 }
 
+/* ---- Slide progress indicator ---- */
+.slide-progress {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 0.8rem;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: #6a7f9e;
+  pointer-events: none;
+}
+
+.slide-progress.is-hidden {
+  display: none;
+}
+
+.slide-progress-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.slide-progress-dot {
+  width: 8px;
+  height: 8px;
+  background: #293752;
+  border: 1px solid #4a5c78;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.slide-progress-dot.is-active {
+  background: #f7df1e;
+  border-color: #fff08a;
+  box-shadow: 0 0 6px rgba(247, 223, 30, 0.5);
+}
+
+@media (max-width: 700px) {
+  .slide-progress-label {
+    display: none;
+  }
+}
+
 /* ==========================================
-   QUIZ & MOBILE OVERRIDES
+   QUIZ (arcade terminal style) & MOBILE OVERRIDES
    ========================================== */
 
 .quiz {
@@ -558,7 +733,7 @@ canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(10, 20, 40, 0.4);
+  background: rgba(5, 8, 17, 0.65);
 }
 
 .quiz[hidden] {
@@ -571,30 +746,32 @@ canvas {
   max-height: 90dvh;
   overflow-y: auto;
   padding: 0;
-  background: #ece9d8;
-  color: #000000;
-  border-radius: 8px 8px 0 0;
-  border: 3px solid #0055ea;
+  background: #090e19;
+  color: #c9d6e8;
+  border: 2px solid #293752;
   text-align: left;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 0 0 4px rgba(247, 223, 30, 0.08),
+    0 15px 35px rgba(0, 0, 0, 0.7);
   font-family: "Pixelify Sans", sans-serif;
 }
 
-.quiz-card::before {
-  content: "QUESTION_SESSION.EXE";
-  display: flex;
-  align-items: center;
-  height: 30px;
-  background: linear-gradient(180deg, #0055ea 0%, #0026aef7 100%);
-  color: white;
-  font-size: 0.95rem;
-  font-weight: bold;
-  padding-left: 10px;
-  letter-spacing: 1px;
+.quiz-card .map-screen-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-size: 0.75rem;
+  color: #33ff33;
+  text-shadow: 0 0 6px rgba(51, 255, 51, 0.35);
 }
 
 .quiz-card-inner {
   padding: 1.5rem;
+  background:
+    linear-gradient(rgba(41, 55, 82, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 55, 82, 0.12) 1px, transparent 1px),
+    #0b1326;
+  background-size: 16px 16px, 16px 16px, auto;
 }
 
 #quiz-timer {
@@ -602,14 +779,15 @@ canvas {
   text-align: right;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #0026ae;
+  letter-spacing: 2px;
+  color: #33ff33;
+  font-variant-numeric: tabular-nums;
 }
 
 .quiz-bar {
   height: 18px;
-  background: #ffffff;
-  border: 1px solid #7f9db9;
-  border-radius: 2px;
+  background: #050811;
+  border: 1px solid #1c2b49;
   overflow: hidden;
   padding: 2px;
 }
@@ -624,11 +802,14 @@ canvas {
 .bar-block {
   flex: 1;
   height: 100%;
-  background: linear-gradient(180deg, #1084d0 0%, #0055ea 100%);
+  background: #33ff33;
+  box-shadow: 0 0 6px rgba(51, 255, 51, 0.45);
+  transition: opacity 0.15s ease, background-color 0.2s ease;
 }
 
 .bar-block.low {
-  background: linear-gradient(180deg, #f88379 0%, #d9534f 100%);
+  background: #ff3b3b;
+  box-shadow: 0 0 6px rgba(255, 59, 59, 0.55);
 }
 
 .bar-block.hidden {
@@ -639,7 +820,7 @@ canvas {
   margin: 1.2rem 0;
   font-size: clamp(1.2rem, 2.2vw, 1.7rem);
   line-height: 1.3;
-  color: #0c1021;
+  color: #ffffff;
 }
 
 #quiz-choices {
@@ -652,11 +833,23 @@ canvas {
   font-family: inherit;
   font-size: 1.1rem;
   text-align: left;
-  color: #000000;
-  background: linear-gradient(180deg, #ffffff 0%, #ece9d8 100%);
-  border: 1px solid #003c74;
-  border-radius: 3px;
+  color: #c9d6e8;
+  background: #111a2e;
+  border: 2px solid #293752;
   cursor: pointer;
+  box-shadow: 0 3px 0 #050811;
+  transition: transform 0.06s ease, box-shadow 0.06s ease, background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+#quiz-choices button:hover {
+  color: #f7df1e;
+  background: #1c2b49;
+  border-color: #f7df1e;
+}
+
+#quiz-choices button:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 #050811;
 }
 
 #touch-dive,
@@ -710,9 +903,10 @@ canvas {
     padding: 0.4rem 1rem;
     font-family: inherit;
     font-size: 1rem;
-    color: #1b1b2f;
-    background: #fff6dd;
-    border: none;
+    color: #171a27;
+    background: #f7df1e;
+    border: 2px solid #fff08a;
+    box-shadow: 0 3px 0 #a88d00;
   }
 }
 
@@ -764,13 +958,149 @@ canvas {
   .hint-desktop { display: none; }
 }
 
-#gsap-cursor.is-btn {
-  width: 68px;
-  height: 26px;
-  background: rgba(247, 223, 30, 0.22);
+/* ---- Reduced motion: no CRT effects, glitches or blinking ---- */
+@media (prefers-reduced-motion: reduce) {
+  .crt-screen,
+  .scanlines,
+  .arcade-landing,
+  .arcade-landing .game-title,
+  .music-display::after {
+    animation: none;
+  }
+
+  .insert-coin-btn,
+  .music-btn,
+  .terminal,
+  #quiz-choices button {
+    transition: none;
+  }
+
+  .terminal.is-dragging {
+    rotate: none;
+  }
 }
 
-body.s1-has-cursor, 
+/* ==========================================
+   CUSTOM CURSOR (single source of truth; GSAP only moves it)
+   ========================================== */
+
+body.s1-has-cursor,
 body.s1-has-cursor * {
   cursor: none !important;
+}
+
+/* Separate rules on purpose: an unknown pseudo-element would void a combined rule */
+body.s1-has-cursor input[type="range"]::-webkit-slider-thumb {
+  cursor: none !important;
+}
+
+body.s1-has-cursor input[type="range"]::-moz-range-thumb {
+  cursor: none !important;
+}
+
+#gsap-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 2px solid #f7df1e;
+  background: rgba(247, 223, 30, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  box-shadow: 0 0 10px rgba(247, 223, 30, 0.35);
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    border-radius 0.2s ease,
+    box-shadow 0.2s ease,
+    scale 0.1s ease;
+}
+
+#gsap-cursor .gsap-cursor-label {
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+#gsap-cursor.is-hl {
+  width: 36px;
+  height: 36px;
+  background: rgba(247, 223, 30, 0.12);
+}
+
+#gsap-cursor.is-fries {
+  width: 42px;
+  height: 42px;
+  border-color: #33ff33;
+  background: rgba(51, 255, 51, 0.14);
+  box-shadow: 0 0 14px rgba(51, 255, 51, 0.45);
+}
+
+#gsap-cursor.is-frame {
+  width: 78px;
+  height: 78px;
+  background: transparent;
+  border-style: dashed;
+}
+
+#gsap-cursor.is-frame .gsap-cursor-label {
+  opacity: 1;
+  color: #f7df1e;
+}
+
+#gsap-cursor.is-link {
+  width: 68px;
+  height: 26px;
+  background: #f7df1e;
+}
+
+#gsap-cursor.is-link .gsap-cursor-label {
+  opacity: 1;
+  color: #090e19;
+}
+
+/* Button outline: size comes from CSS variables set in script.js */
+#gsap-cursor.is-btn {
+  width: var(--btn-w, 16px);
+  height: var(--btn-h, 16px);
+  border-radius: var(--btn-r, 3px);
+  background: rgba(247, 223, 30, 0.18);
+}
+
+/* Volume slider: outline around the thumb + floating % readout */
+#gsap-cursor.is-range {
+  width: 20px;
+  height: 24px;
+  border-color: #33ff33;
+  background: transparent;
+  box-shadow: 0 0 10px rgba(51, 255, 51, 0.45);
+}
+
+#gsap-cursor.is-range .gsap-cursor-label {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  translate: -50% 0;
+  padding: 2px 5px;
+  font-size: 0.6rem;
+  color: #33ff33;
+  background: #050811;
+  border: 1px solid #33ff33;
+  opacity: 1;
+}
+
+/* Squash while the mouse button is held */
+#gsap-cursor.is-pressed {
+  scale: 0.85;
 }

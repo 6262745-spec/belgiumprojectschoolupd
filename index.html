@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html <html lang="en" class="boot">>
+<html lang="en" class="boot">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belgium Project Site</title>
+  <!-- Preload the pixel font so titles don't jump when it swaps in -->
+  <link rel="preload" href="assets/fonts/PixelifySans.ttf" as="font" type="font/ttf" crossorigin>
   <!-- Load GSAP Animation Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <link rel="stylesheet" href="css/styles.css">
@@ -244,6 +246,14 @@
 
           <div id="quiz" class="quiz" hidden>
             <div class="quiz-card">
+              <div class="map-screen-header">
+                <span>QUIZ_SESSION.EXE // ANSWER TO CONTINUE</span>
+                <span class="terminal-controls">
+                  <span class="control-btn"></span>
+                  <span class="control-btn"></span>
+                  <span class="control-btn"></span>
+                </span>
+              </div>
               <div class="quiz-card-inner">
                 <p id="quiz-timer"></p>
                 <div class="quiz-bar">
@@ -270,6 +280,12 @@
           <div id="rotate-hint"><p>Rotate your phone sideways to play</p></div>
         </div>
 
+        <!-- Slide progress indicator (filled in by script.js) -->
+        <div class="slide-progress" id="slide-progress" aria-live="polite">
+          <span class="slide-progress-label"></span>
+          <span class="slide-progress-dots"></span>
+        </div>
+
       </div>
 
     </div>
@@ -288,7 +304,7 @@
   <script src="js/components/slide1.js"></script>
 
   <!-- Core Presentation -->
-  <script src="js/core/script.js"></script> 
+  <script src="js/core/script.js"></script>
 
   <!-- Game Logic & Landing Page -->
   <script src="js/game/game.js"></script>

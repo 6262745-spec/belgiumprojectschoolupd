@@ -136,6 +136,7 @@ const player = {
 const obstacles = [];
 const keys = {};
 
+
 let floorY = 0;
 let gameW = 800;
 let scale = 1;
@@ -145,6 +146,7 @@ let rafId = 0;
 let lastTime = 0;
 
 let state = "start";
+let shake = 0;
 let health = MAX_HEALTH;
 let speed = START_SPEED;
 let distance = 0;
@@ -566,6 +568,7 @@ function logic(step) {
 
     if (!o.hit && collides(getHitbox(player), getObstacleHitbox(o))) {
       o.hit = true;
+      shake = 12;
       playSfx('sfx-hit');
       forgiveNearby(o);
       askQuestion();
@@ -800,6 +803,29 @@ function drawHitbox(box) {
 // ---
 // DRAWING: HUD
 // ---
+const GAME_TITLE = "WAFFLE RUN";
+
+function drawArcadeText(text, x, y, size, color = "#f7df1e", shadow = "#a88d00") {
+  const d = Math.max(2, Math.round(size / 18));
+  ctx.font = "bold " + size + "px " + UI_FONT;
+  ctx.fillStyle = "#080b14";
+  ctx.fillText(text, x + d * 2, y + d * 2);
+  ctx.fillStyle = shadow;
+  ctx.fillText(text, x + d, y + d);
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+}
+
+function drawOutlinedText(text, x, y, font, fill) {
+  ctx.font = font;
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 5;
+  ctx.strokeStyle = "#080b14";
+  ctx.strokeText(text, x, y);
+  ctx.fillStyle = fill;
+  ctx.fillText(text, x, y);
+}
+
 function drawHearts() {
   if (!heartImg.complete || heartImg.naturalWidth === 0) return;
 
@@ -821,45 +847,62 @@ function drawHearts() {
 function drawHud(score) {
   drawHearts();
 
-  ctx.fillStyle = "#0b2545";
+  ctx.save();
   ctx.textAlign = "right";
-  ctx.font = "24px " + UI_FONT;
-  ctx.fillText("Score: " + score, gameW - 28, 30);
+  drawOutlinedText("SCORE " + String(score).padStart(6, "0"), gameW - 20, 32, "bold 24px " + UI_FONT, "#f7df1e");
+  ctx.restore();
 }
 
 function drawGameOver(score) {
-  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+  ctx.save();
+  ctx.fillStyle = "rgba(9, 14, 25, 0.78)";
   ctx.fillRect(0, 0, gameW, DESIGN_H);
 
-  ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.font = "40px " + UI_FONT;
-  ctx.fillText("GAME OVER", gameW / 2, DESIGN_H / 2 - 10);
-  ctx.font = "20px " + UI_FONT;
-  ctx.fillText("Score: " + score, gameW / 2, DESIGN_H / 2 + 20);
-  ctx.fillText(touchQuery.matches ? "Tap to restart" : "Press Enter to restart", gameW / 2, DESIGN_H / 2 + 50);
+  drawArcadeText("GAME OVER", gameW / 2, DESIGN_H / 2 - 20, 56, "#ff3b3b", "#8a1a1a");
+
+  ctx.font = "bold 26px " + UI_FONT;
+  ctx.fillStyle = "#f7df1e";
+  ctx.fillText("SCORE " + String(score).padStart(6, "0"), gameW / 2, DESIGN_H / 2 + 30);
+
+  if (Math.floor(Date.now() / 500) % 2 === 0) {
+    ctx.font = "20px " + UI_FONT;
+    ctx.fillStyle = "#c9d6e8";
+    ctx.fillText(touchQuery.matches ? "[TAP TO RESTART]" : "[PRESS ENTER TO RESTART]", gameW / 2, DESIGN_H / 2 + 75);
+  }
+  ctx.restore();
 }
 
 function drawStartScreen() {
   const touch = touchQuery.matches;
 
-  ctx.fillStyle = "rgba(10, 20, 40, 0.55)";
+  ctx.save();
+  ctx.fillStyle = "rgba(9, 14, 25, 0.72)";
   ctx.fillRect(0, 0, gameW, DESIGN_H);
 
-  ctx.fillStyle = "white";
   ctx.textAlign = "center";
-  ctx.font = "bold 56px " + UI_FONT;
-  ctx.fillText("BELGIUM GAME TITLE", gameW / 2, 170);
+
+  ctx.font = "16px " + UI_FONT;
+  ctx.fillStyle = "#33ff33";
+  ctx.fillText("[FILE_04 // MINI_GAME]", gameW / 2, 110);
+
+  drawArcadeText(GAME_TITLE, gameW / 2, 175, 56);
 
   ctx.font = "22px " + UI_FONT;
-  ctx.fillText(touch ? "Tap the right side: jump" : "Space / Up arrow: jump", gameW / 2, 235);
-  ctx.fillText(touch ? "Hold the left side: dive" : "Down arrow: dive", gameW / 2, 268);
-  ctx.fillText("Hit an obstacle and you have to answer a question", gameW / 2, 315);
+  ctx.fillStyle = "#c9d6e8";
+  ctx.fillText(touch ? "Tap the right side: jump" : "Space / Up arrow: jump", gameW / 2, 240);
+  ctx.fillText(touch ? "Hold the left side: dive" : "Down arrow: dive", gameW / 2, 273);
+
+  ctx.font = "18px " + UI_FONT;
+  ctx.fillStyle = "#7285a8";
+  ctx.fillText("Hit an obstacle and you have to answer a question", gameW / 2, 318);
 
   if (Math.floor(Date.now() / 500) % 2 === 0) {
     ctx.font = "bold 28px " + UI_FONT;
-    ctx.fillText(touch ? "Tap to start" : "Press Space to start", gameW / 2, 390);
+    ctx.fillStyle = "#f7df1e";
+    ctx.fillText(touch ? "[TAP TO START]" : "[PRESS SPACE TO START]", gameW / 2, 390);
   }
+  ctx.restore();
 }
 
 
@@ -869,6 +912,13 @@ function drawStartScreen() {
 function render() {
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
   ctx.clearRect(0, 0, gameW, DESIGN_H);
+
+  // Screen shake (decays every frame, including behind the quiz popup)
+  if (shake > 0) {
+    ctx.translate((Math.random() - 0.5) * shake, (Math.random() - 0.5) * shake);
+    shake *= 0.85;
+    if (shake < 0.5) shake = 0;
+  }
 
   const score = Math.floor(distance / 10);
 
@@ -887,9 +937,18 @@ function render() {
   }
 
   drawHud(score);
+
+  // Red hit flash (drawn without the shake offset so it covers the full screen)
+  if (shake > 4) {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.fillStyle = "rgba(255, 59, 59, " + (shake / 40) + ")";
+    ctx.fillRect(0, 0, gameW, DESIGN_H);
+  }
+
   if (state === "start") drawStartScreen();
   if (state === "gameover") drawGameOver(score);
 }
+
 
 
 // ---
