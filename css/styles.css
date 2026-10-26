@@ -767,7 +767,7 @@ canvas {
 #gsap-cursor.is-btn {
   width: 68px;
   height: 26px;
-  background: rgba(247, 223, 30, 0.22); /* Keeps it translucent and unfilled when expanding */
+  background: rgba(247, 223, 30, 0.22);
 }
 
 body.s1-has-cursor, 
