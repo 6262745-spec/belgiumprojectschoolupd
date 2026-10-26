@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html <html lang="en" class="boot">>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belgium Project Site</title>
+  <!-- Load GSAP Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/slide1.css">
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+  <div class="arcade-casing">
+    <div class="crt-screen">
+
+      <div class="scanlines"></div>
+
+      <!-- Landing Page -->
+      <div id="arcade-landing" class="arcade-landing">
+
+        <div class="landing-header">
+          <span class="landing-label">BELGIUM • CLASS PROJECT</span>
+          <h1 class="game-title">Belgium Project</h1>
+          <p class="subtitle" id="language-subtitle">Hoe gaat het?</p>
+          <div class="mobile-desktop-warning">DESKTOP RECOMMENDED</div>
+        </div>
+
+        <div class="screen-hud-topleft">
+          <div class="hud-title">SYS_INDEX // DEBUG_LOG.DAT</div>
+          <div class="hud-row"><span class="tag">[ACTIVE]</span> <a href="#" class="hud-link">01. ARCADE_SCREEN</a></div>
+          <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">02. PROJECT_OVERVIEW</a></div>
+          <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">03. BELGIUM_HISTORY</a></div>
+          <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">04. BRUGES_DATA</a></div>
+          <div class="hud-row"><span class="tag">[OK]</span> <a href="#" class="hud-link">05. ARCADE_GAME</a></div>
+          <div class="hud-stats">SYS_LOAD: 14% | MEM: 640K</div>
+        </div>
+
+        <div class="terminal globe-display-container">
+          <div class="map-screen-header">
+            <span>BELGIUM.LOC // COUNTRY LOCATED</span>
+            <span class="terminal-controls">
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+            </span>
+          </div>
+          <div class="globe-wrapper">
+            <img src="assets/slideImages/earthspin-sheetFront.gif" alt="Spinning Globe" class="pixel-globe-gif">
+          </div>
+        </div>
+
+        <div class="terminal side-photo-card">
+          <div class="map-screen-header">
+            <span>LOC_PREVIEW: BRUGES</span>
+            <span class="terminal-controls">
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+            </span>
+          </div>
+          <div class="side-image-wrapper">
+            <img src="assets/slideImages/burgesFront.avif" alt="Bruges, Belgium" class="hero-image">
+          </div>
+        </div>
+
+        <div class="insert-coin-container">
+          <div class="coin-magnet">
+            <button id="btn-insert-coin" class="insert-coin-btn">
+              <span class="coin-symbol">+</span>
+              INSERT COIN
+            </button>
+          </div>
+          <span class="landing-footer">PRESS TO START</span>
+        </div>
+
+        <div class="terminal credits-terminal">
+          <div class="map-screen-header">
+            <span>SYS_CREDITS // TEAM_ROSTER</span>
+            <span class="terminal-controls">
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+            </span>
+          </div>
+          <div class="credits-body">
+            <div class="credit-row"><span class="credit-name">Hawk</span> <span class="credit-role">Web Dev</span></div>
+            <div class="credit-row"><span class="credit-name">Samuel</span> <span class="credit-role">Research</span></div>
+            <div class="credit-row"><span class="credit-name">Matthew</span> <span class="credit-role">Research</span></div>
+            <div class="credit-row"><span class="credit-name">Jacob.R</span> <span class="credit-role">Booth</span></div>
+            <div class="credit-row"><span class="credit-name">Jacob.Q</span> <span class="credit-role">???</span></div>
+          </div>
+        </div>
+
+        <div class="terminal music-terminal">
+          <div class="map-screen-header">
+            <span>SYS_AUDIO // JUKER.DAT</span>
+            <span class="terminal-controls">
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+              <span class="control-btn"></span>
+            </span>
+          </div>
+          <div class="music-body">
+            <div class="music-display" id="now-playing">TRACK: [MUTED]</div>
+            <div class="music-controls-row">
+              <button class="music-btn" id="btn-track-prev">&lt;&lt;</button>
+              <button class="music-btn play-pause-btn" id="btn-track-toggle">PLAY</button>
+              <button class="music-btn" id="btn-track-next">&gt;&gt;</button>
+            </div>
+
+            <div class="volume-controls-container">
+              <div class="volume-slider-row">
+                <label for="slider-bgm-volume">BGM VOL</label>
+                <input type="range" id="slider-bgm-volume" min="0" max="1" step="0.05" value="0.7">
+              </div>
+              <div class="volume-slider-row">
+                <label for="slider-sfx-volume">SFX VOL</label>
+                <input type="range" id="slider-sfx-volume" min="0" max="1" step="0.05" value="0.8">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <audio id="bgm-player" loop>
+          <source src="assets/audio/music/arcademusic.mp3" type="audio/mpeg">
+          <source src="assets/audio/music/arcademusic2.mp3" type="audio/mpeg">
+          <source src="assets/audio/music/arcademusic3.mp3" type="audio/mpeg">
+          <source src="assets/audio/music/vhs-noise.mp3" type="audio/mpeg">
+        </audio>
+
+        <audio id="sfx-click" src="assets/audio/sfx/click.mp3" preload="auto"></audio>
+        <audio id="sfx-jump" src="assets/audio/sfx/jump.mp3" preload="auto"></audio>
+        <audio id="sfx-dive" src="assets/audio/sfx/dive.mp3" preload="auto"></audio>
+        <audio id="sfx-hit" src="assets/audio/sfx/hit.mp3" preload="auto"></audio>
+        <audio id="sfx-wrong" src="assets/audio/sfx/wronganswer.wav" preload="auto"></audio>
+        <audio id="sfx-right" src="assets/audio/sfx/rightanswer.mp3" preload="auto"></audio>
+        <audio id="sfx-quiz" src="assets/audio/sfx/quizmusic.mp3" loop preload="auto"></audio>
+
+      </div>
+
+      <!-- Presentation Container -->
+      <div class="presentation-container" id="presentation-wrapper" style="display: none;">
+
+        <!-- ============ SLIDE 1: INTRO ============ -->
+        <div class="slide active s1">
+          <div class="s1-grid">
+
+            <!-- Header -->
+            <header class="s1-head">
+              <span class="s1-eyebrow" data-scramble="[FILE_01 // INTRO]">[FILE_01 // INTRO]</span>
+              <h1 class="s1-title">
+                <span class="s1-title-accent">Belgium:</span>
+                <span class="s1-title-rest">Introduction to a Fascinating Place</span>
+              </h1>
+              <div class="s1-rule">
+                <span class="s1-rule-line"></span>
+                <span class="s1-rule-label">BELGIUM GEO PROJECT</span>
+              </div>
+            </header>
+
+            <!-- Text column -->
+            <div class="s1-text">
+              <p class="s1-para">
+                When we were assigned this project, we wanted to look beyond just geography facts no one talks about. It gives no importance to the beauty of Belgium, such as their cross-section of <span class="s1-hl">culture</span>, <span class="s1-hl">heavy industry</span> and <span class="s1-hl">high-tech agriculture</span>. We wanted to shine a light on the most underrated country resting in Europe.
+              </p>
+
+              <blockquote class="s1-quote">
+                <span class="s1-quote-bar"></span>
+                <p class="s1-quote-text">"To me, Belgium remains one of Europe's best kept secrets."</p>
+                <cite class="s1-cite">— Rick Steves, <a href="https://www.ricksteves.com/watch-read-listen/read/articles/underappreciated-belgium-packs-plenty-of-surprises" target="_blank" rel="noopener" class="hud-link">Underappreciated Belgium Packs Plenty of Surprises</a></cite>
+              </blockquote>
+
+              <p class="s1-para">
+                Before we dive into the eye-opening data, ranging from <span class="s1-hl">Antwerp's global diamond market</span> to the science behind <span class="s1-hl s1-hl-fries" data-sprite="fries">the best fries in the world</span>, let's take a look at what makes Belgium, well; Belgium!
+              </p>
+
+              <div class="s1-stats">
+                <div class="s1-stat">
+                  <span class="s1-stat-num" data-count="3" data-from="0">3</span>
+                  <span class="s1-stat-label">OFFICIAL LANGUAGES</span>
+                </div>
+                <div class="s1-stat">
+                  <span class="s1-stat-num" data-count="10" data-from="0">10</span>
+                  <span class="s1-stat-label">PROVINCES</span>
+                </div>
+                <div class="s1-stat">
+                  <span class="s1-stat-num" data-count="1830" data-from="1700">1830</span>
+                  <span class="s1-stat-label">INDEPENDENCE</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Image column -->
+            <figure class="s1-figure">
+              <div class="map-screen-header">
+                <span>IMG_ARCHIVE: GHENT.JPG</span>
+                <span class="terminal-controls">
+                  <span class="control-btn"></span>
+                  <span class="control-btn"></span>
+                  <span class="control-btn"></span>
+                </span>
+              </div>
+              <div class="s1-img-wrap">
+                <img src="assets/slideImages/BeautifulBelgiumSlide1.jpg" alt="City center of Ghent" class="s1-img">
+              </div>
+              <figcaption class="s1-caption">
+                <span>GHENT, EAST FLANDERS</span>
+                <span>51.05°N 3.72°E</span>
+              </figcaption>
+
+              <!-- GLARE -->
+              <div class="s1-glare" aria-hidden="true">
+                <div class="s1-glare-sheen"></div>
+              </div>
+            </figure>
+
+          </div>
+
+          <div class="s1-footer">
+            <span class="hint-desktop">[PRESS RIGHT ARROW TO PROCEED]</span>
+            <span class="hint-touch">[SWIPE TO PROCEED]</span>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+          <h1>Slide 2</h1>
+          <p>This is the second slide.</p>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+          <h1>Slide 3</h1>
+          <p>Slide 3</p>
+        </div>
+
+        <!-- Slide 4: Game Mini-Game -->
+        <div class="slide">
+          <canvas id="game" height="400"></canvas>
+
+          <div id="touch-dive"></div>
+          <div id="touch-jump"></div>
+
+          <div id="quiz" class="quiz" hidden>
+            <div class="quiz-card">
+              <div class="quiz-card-inner">
+                <p id="quiz-timer"></p>
+                <div class="quiz-bar">
+                  <div id="quiz-bar-fill">
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                    <div class="bar-block"></div>
+                  </div>
+                </div>
+                <h2 id="quiz-question"></h2>
+                <div id="quiz-choices"></div>
+              </div>
+            </div>
+          </div>
+
+          <button id="btn-exit">BACK</button>
+          <div id="rotate-hint"><p>Rotate your phone sideways to play</p></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating GSAP Cursor Box + Pixelated Belgium Fry Sprite -->
+  <div id="gsap-cursor" class="gsap-cursor" aria-hidden="true">
+    <span class="gsap-cursor-label"></span>
+    <div id="gsap-sprite-fry" class="gsap-sprite">
+      <img src="assets/images/Belgiumcone.png" alt="Belgian Fries" class="gsap-sprite-img">
+    </div>
+  </div>
+
+  <!-- Game Data & Components -->
+  <script src="js/game/questions.js"></script>
+  <script src="js/components/slide1.js"></script>
+
+  <!-- Core Presentation -->
+  <script src="js/core/script.js"></script>
+
+  <!-- Game Logic & Landing Page -->
+  <script src="js/game/game.js"></script>
+  <script src="js/core/landing.js"></script>
+</body>
+</html>

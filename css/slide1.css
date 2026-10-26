@@ -1,0 +1,431 @@
+/* slide1.css - Slide 1 (Intro) styling. All classes are prefixed "s1-". */
+
+.slide.s1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: clamp(1rem, 4vh, 2.5rem) clamp(1rem, 5vw, 4rem) 3.5rem;
+  background: radial-gradient(ellipse at 15% 0%, #1c2b49 0%, #111a2e 55%, #090e19 100%);
+}
+
+/* Subtle blueprint grid behind everything */
+.slide.s1::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(41, 55, 82, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 55, 82, 0.18) 1px, transparent 1px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
+  z-index: 1;
+}
+
+.s1-grid {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(0.8rem, 3vh, 2rem) clamp(1.5rem, 5vw, 4rem);
+  text-align: left;
+}
+
+/* ---- Header ---- */
+.s1-head {
+  grid-column: 1 / -1;
+}
+
+.s1-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #33ff33;
+  letter-spacing: 4px;
+  text-shadow: 0 0 8px rgba(51, 255, 51, 0.35);
+}
+
+.slide .s1-title {
+  margin: 0.35rem 0 0.8rem;
+  font-size: clamp(1.8rem, 4.2vw, 3.4rem);
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.s1-title-accent {
+  color: #f7df1e;
+  text-shadow: 3px 3px 0 #a88d00, 0 0 18px rgba(247, 223, 30, 0.25);
+}
+
+.s1-rule {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.s1-rule-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #f7df1e 0%, #293752 55%, transparent 100%);
+  transform-origin: left center;
+}
+
+.s1-rule-label {
+  font-size: 0.8rem;
+  color: #7285a8;
+  letter-spacing: 4px;
+  white-space: nowrap;
+}
+
+/* ---- Split-text masking structures (Required for GSAP script) ---- */
+.s1-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.05em 0.15em;
+  margin: 0 -0.05em -0.15em;
+}
+
+.s1-word,
+.s1-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* ---- Text column ---- */
+.s1-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.8rem, 2.5vh, 1.5rem);
+  min-height: 0;
+  color: #c9d6e8;
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+  line-height: 1.6;
+}
+
+.s1-para {
+  margin: 0;
+}
+
+/* Dashed underline only appears on the words as they rise in, 
+   and the highlighter sweep is hidden (--hl: 0) until GSAP animates it */
+.s1-hl {
+  --hl: 0;
+  color: #f7df1e;
+  font-weight: bold;
+  background-image: linear-gradient(rgba(247, 223, 30, 0.22), rgba(247, 223, 30, 0.22));
+  background-repeat: no-repeat;
+  background-position: 0 90%;
+  background-size: calc(var(--hl) * 100%) 0.45em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.s1-hl-fries {
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.s1-hl-fries .s1-word {
+  border-bottom: 1px dashed rgba(247, 223, 30, 0.65);
+}
+
+.s1-hl-fries:hover {
+  color: #fff38f;
+  text-shadow: 0 0 10px rgba(247, 223, 30, 0.55);
+}
+
+/* ---- Quote ---- */
+.s1-quote {
+  position: relative;
+  margin: 0;
+  padding: 0.85rem 1.1rem 0.85rem 1.3rem;
+  background: rgba(5, 8, 17, 0.75);
+  border: 1px solid #1c2b49;
+}
+
+.s1-quote-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #33ff33;
+  box-shadow: 0 0 10px rgba(51, 255, 51, 0.5);
+  transform-origin: top center;
+}
+
+.s1-quote-text {
+  margin: 0;
+  font-size: 1.05em;
+  font-style: italic;
+  color: #ffffff;
+}
+
+.s1-cite {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  font-style: normal;
+  color: #6a7f9e;
+}
+
+/* ---- Stats Section ---- */
+.s1-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #293752;
+}
+
+.s1-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.s1-stat-num {
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  color: #f7df1e;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 2px 2px 0 #a88d00;
+}
+
+.s1-stat-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: #6a7f9e;
+  text-transform: uppercase;
+}
+
+/* ---- Image Frame column + 3D tilt ---- */
+.s1-figure {
+  position: relative;
+  margin: 0;
+  align-self: center;
+  width: 100%;
+  height: min(100%, 450px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #090e19;
+  border: 2px solid #293752;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.s1-img-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.s1-img {
+  display: block;
+  width: 112%;
+  height: 112%;
+  margin: -6%;
+  object-fit: cover;
+  filter: contrast(1.05) brightness(0.95);
+  will-change: transform;
+}
+
+.s1-caption {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: #6a7f9e;
+  border-top: 1px solid #293752;
+  background: #0b1326;
+}
+
+/* ---- Glare sheen ---- */
+.s1-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  transform: translateZ(1px);
+}
+
+.s1-glare-sheen {
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.18) 14%,
+      rgba(255, 255, 255, 0) 34%),
+    linear-gradient(115deg,
+      transparent 42%,
+      rgba(247, 223, 30, 0.10) 50%,
+      transparent 58%);
+  will-change: transform, opacity;
+}
+
+/* ---- GSAP Cursor Box + Pixel Fry Sprite ---- */
+.s1-has-cursor .slide.s1,
+.s1-has-cursor .slide.s1 * {
+  cursor: none;
+}
+
+#gsap-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 2px solid #f7df1e;
+  background: rgba(247, 223, 30, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  box-shadow: 0 0 10px rgba(247, 223, 30, 0.35);
+  transition:
+    width 0.22s ease,
+    height 0.22s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    border-radius 0.22s ease;
+}
+
+#gsap-cursor .gsap-cursor-label {
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+/* Cursor states */
+#gsap-cursor.is-hl {
+  width: 36px;
+  height: 36px;
+  background: rgba(247, 223, 30, 0.12);
+}
+
+#gsap-cursor.is-fries {
+  width: 42px;
+  height: 42px;
+  border-color: #33ff33;
+  background: rgba(51, 255, 51, 0.14);
+  box-shadow: 0 0 14px rgba(51, 255, 51, 0.45);
+}
+
+#gsap-cursor.is-frame {
+  width: 78px;
+  height: 78px;
+  background: transparent;
+  border-style: dashed;
+}
+
+#gsap-cursor.is-frame .gsap-cursor-label {
+  opacity: 1;
+  color: #f7df1e;
+}
+
+#gsap-cursor.is-link {
+  width: 68px;
+  height: 26px;
+  background: #f7df1e;
+}
+
+#gsap-cursor.is-link .gsap-cursor-label {
+  opacity: 1;
+  color: #090e19;
+}
+
+/* Pixelated Belgian Fry Cone Sprite */
+#gsap-sprite-fry {
+  position: absolute;
+  left: 34px;
+  top: -54px;
+  width: 68px;
+  height: 68px;
+  opacity: 0;
+  transform-origin: 30% 90%;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.gsap-sprite-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(3px 4px 0 rgba(5, 8, 17, 0.85));
+}
+
+/* ---- Navigation Hints ---- */
+.s1-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.8rem;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: #6a7f9e;
+  pointer-events: none;
+}
+
+/* ---- Viewport Responsiveness Overrides ---- */
+@media (max-width: 960px), (max-height: 600px) {
+  .slide.s1 {
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding-bottom: 4rem;
+  }
+
+  .s1-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+    gap: 1.5rem;
+  }
+
+  .s1-figure {
+    height: 280px;
+    grid-row: 2;
+  }
+
+  .s1-text {
+    grid-row: 3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s1-glare,
+  #gsap-cursor {
+    display: none;
+  }
+}
