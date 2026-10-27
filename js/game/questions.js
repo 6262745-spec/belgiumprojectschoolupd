@@ -22,10 +22,16 @@ const questions = [
     answer: 1,   // Choice B
   },
   {
-    question: "Example question two?",
-    choices: ["Choice A", "Choice B", "Choice C", "Choice D"],
+    question: "What are the 3 main languages of Belgium?",
+    choices: [
+      "Dutch, French, and German", 
+      "Dutch, French, and English", 
+      "French, German, and Spanish", 
+      "Dutch, Flemish, and Walloon"
+    ],
     answer: 0,   // Choice A
   },
+
   {
     question: "Example question three?",
     choices: ["Choice A", "Choice B", "Choice C", "Choice D"],
