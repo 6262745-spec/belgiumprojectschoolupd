@@ -17,8 +17,8 @@ So say you wanna add another choice, you could do:
 
 const questions = [
   {
-    question: "Example question one?",
-    choices: ["Choice A", "Choice B", "Choice C", "Choice D"],
+    question: "When did Belgium declare its independence?",
+    choices: ["1802", "1830", "1742", "32 BCE"],
     answer: 1,   // Choice B
   },
   {
