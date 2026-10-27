@@ -37,7 +37,7 @@ const WRONG_ANSWER_COSTS_HEALTH = true;
 
 const START_SPEED = 8;
 const MAX_SPEED = 15;
-const SPEED_UP = 0.002;
+const SPEED_UP = 0.02;
 
 const BEE_FRAMES = 6;
 const BEE_HITBOX = { side: 30, top: 15, bottom: 20 };
