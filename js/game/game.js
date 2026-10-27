@@ -31,7 +31,7 @@ const WAFFLE_HEIGHT = 120;
 const DIVE_RATIO = 0.6;
 const MAX_STEP = 3;
 
-const MAX_HEALTH = 5;
+const MAX_HEALTH = 1;
 const QUESTION_TIME = 10;
 const WRONG_ANSWER_COSTS_HEALTH = true;
 
@@ -151,7 +151,7 @@ let health = MAX_HEALTH;
 let speed = START_SPEED;
 let distance = 0;
 let distanceSinceSpawn = 0;
-let nextGap = 600;
+let nextGap = 300;
 let gameOverTime = 0;
 
 let currentQ = null;
